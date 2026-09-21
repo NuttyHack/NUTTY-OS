@@ -66,8 +66,8 @@ if (frontendDist) {
   // Serve static assets
   app.use(express.static(frontendDist));
 
-  // SPA Catch-all Fallback
-  app.get("*", (req, res, next) => {
+  // Express 5 compatible SPA Catch-all Fallback
+  app.use((req, res, next) => {
     if (req.path.startsWith("/api") || req.path.startsWith(CLERK_PROXY_PATH)) {
       return next();
     }
