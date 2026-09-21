@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
-import { Mic, MicOff, Volume2 } from "lucide-react";
+import { Mic, MicOff, Volume2, Sparkles } from "lucide-react";
 import { NuttyData, respondToIntent, VoiceTurn, makeId } from "../lib/nutty-data";
 
 interface JarvisVoiceProps {
@@ -29,6 +29,13 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
   const [, setLocation] = useLocation();
 
   const recognitionRef = useRef<any>(null);
+  const shouldListenRef = useRef(false);
+  const isSpeakingRef = useRef(false);
+
+  // Synchronize state with refs for async event callbacks
+  useEffect(() => {
+    isSpeakingRef.current = isSpeaking;
+  }, [isSpeaking]);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -40,7 +47,7 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.continuous = false;
+    recognition.continuous = false; // We manage turn-taking explicitly
     recognition.interimResults = true;
     recognition.lang = "en-US";
 
@@ -54,13 +61,32 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
       }
     };
 
-    recognition.onend = () => setIsListening(false);
+    recognition.onend = () => {
+      setIsListening(false);
+      // Auto-restart recognition if continuous mode is active and Nati is NOT currently speaking
+      if (shouldListenRef.current && !isSpeakingRef.current) {
+        try {
+          recognition.start();
+          setIsListening(true);
+        } catch (e) {
+          console.debug("Recognition start retry deferred:", e);
+        }
+      }
+    };
+
     recognition.onerror = (event: any) => {
-      console.error("Speech recognition error:", event.error);
+      if (event.error !== "no-speech") {
+        console.error("Speech recognition error:", event.error);
+      }
       setIsListening(false);
     };
 
     recognitionRef.current = recognition;
+
+    return () => {
+      shouldListenRef.current = false;
+      if (recognitionRef.current) recognitionRef.current.stop();
+    };
   }, [data]);
 
   const speakText = (text: string) => {
@@ -71,17 +97,51 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
 
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      isSpeakingRef.current = true;
+      // Stop mic while Nati speaks so she doesn't hear herself
+      if (recognitionRef.current) {
+        try { recognitionRef.current.stop(); } catch {}
+      }
+    };
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      isSpeakingRef.current = false;
+
+      // CONTINUOUS CONVERSATION HANDOFF:
+      // Auto-resume listening immediately when Nati finishes talking
+      if (shouldListenRef.current && recognitionRef.current) {
+        setTranscript("");
+        try {
+          recognitionRef.current.start();
+          setIsListening(true);
+        } catch (e) {
+          console.debug("Failed to restart recognition after speech:", e);
+        }
+      }
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      isSpeakingRef.current = false;
+    };
 
     window.speechSynthesis.speak(utterance);
   };
 
-  const handleSpokenCommand = (command: string) => {
-    if (!command.trim()) return;
+  const handleSpokenCommand = (rawCommand: string) => {
+    if (!rawCommand.trim()) return;
 
-    const result = respondToIntent(command, data);
+    // Wake-word cleanup ("Hey Nati", "Nati")
+    const cleanCommand = rawCommand
+      .replace(/^(hey nati|nati|hey nutty|nutty)[,\s]*/i, "")
+      .trim();
+
+    const queryToProcess = cleanCommand.length > 0 ? cleanCommand : rawCommand;
+
+    const result = respondToIntent(queryToProcess, data);
     const responseText = typeof result === "string" ? result : result.text;
     const intent = typeof result === "object" ? result.intent : null;
 
@@ -95,7 +155,7 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
     const turn: VoiceTurn = {
       id: makeId("voice"),
       timestamp: new Date().toISOString(),
-      prompt: command,
+      prompt: rawCommand,
       response: responseText,
     };
 
@@ -111,14 +171,23 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
       return;
     }
 
-    if (isListening) {
+    if (shouldListenRef.current) {
+      // Stop hands-free session
+      shouldListenRef.current = false;
+      window.speechSynthesis.cancel();
       recognitionRef.current.stop();
       setIsListening(false);
     } else {
+      // Start hands-free continuous session
+      shouldListenRef.current = true;
       window.speechSynthesis.cancel();
       setTranscript("");
-      recognitionRef.current.start();
-      setIsListening(true);
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (e) {
+        console.error("Failed to start speech recognition:", e);
+      }
     }
   };
 
@@ -135,7 +204,9 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
                 : "bg-muted-foreground"
             }`}
           />
-          <span className="font-bold text-xs uppercase tracking-wider">Nutty Assistant</span>
+          <span className="font-bold text-xs uppercase tracking-wider">
+            Nati Assistant {shouldListenRef.current && "(Hands-Free Active)"}
+          </span>
         </div>
         {isSpeaking && (
           <span className="flex items-center gap-1 text-xs text-emerald-500 font-medium">
@@ -149,25 +220,31 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
         {lastReply ? (
           <p className="text-muted-foreground">{lastReply}</p>
         ) : (
-          !transcript && <p className="text-muted-foreground italic">Tap mic and speak...</p>
+          !transcript && (
+            <p className="text-muted-foreground italic">
+              {shouldListenRef.current
+                ? "Say 'Hey Nati' or ask a question..."
+                : "Click below to start hands-free conversation..."}
+            </p>
+          )
         )}
       </div>
 
       <button
         onClick={toggleListening}
         className={`w-full py-2.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-all ${
-          isListening
+          shouldListenRef.current
             ? "bg-red-600 hover:bg-red-700 text-white shadow-red-500/20 shadow-md"
             : "bg-primary hover:opacity-90 text-primary-foreground shadow-md"
         }`}
       >
-        {isListening ? (
+        {shouldListenRef.current ? (
           <>
-            <MicOff className="h-4 w-4" /> Listening...
+            <MicOff className="h-4 w-4" /> End Conversation
           </>
         ) : (
           <>
-            <Mic className="h-4 w-4" /> Start Voice Interaction
+            <Sparkles className="h-4 w-4" /> Start Nati Voice Mode
           </>
         )}
       </button>
