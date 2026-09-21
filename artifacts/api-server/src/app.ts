@@ -50,15 +50,20 @@ app.use(
 // API Router
 app.use("/api", router);
 
-// Serve React Frontend (artifacts/nutty-os/dist)
+// Serve React Frontend (Check both dist and dist/public for index.html)
 const possibleDistPaths = [
+  path.resolve(process.cwd(), "artifacts/nutty-os/dist/public"),
   path.resolve(process.cwd(), "artifacts/nutty-os/dist"),
-  path.resolve(process.cwd(), "../nutty-os/dist"),
+  path.resolve(__dirname, "../../nutty-os/dist/public"),
   path.resolve(__dirname, "../../nutty-os/dist"),
+  path.resolve(__dirname, "../../../artifacts/nutty-os/dist/public"),
   path.resolve(__dirname, "../../../artifacts/nutty-os/dist"),
 ];
 
-const frontendDist = possibleDistPaths.find((p) => fs.existsSync(p));
+// Verify the directory contains index.html specifically
+const frontendDist = possibleDistPaths.find((p) =>
+  fs.existsSync(path.join(p, "index.html")),
+);
 
 if (frontendDist) {
   logger.info({ frontendDist }, "[Express] Serving React frontend");
@@ -74,7 +79,7 @@ if (frontendDist) {
     res.sendFile(path.join(frontendDist, "index.html"));
   });
 } else {
-  logger.warn("[Express] WARNING: Frontend dist directory was not found!");
+  logger.warn("[Express] WARNING: Frontend dist directory or index.html was not found!");
 }
 
 export default app;
