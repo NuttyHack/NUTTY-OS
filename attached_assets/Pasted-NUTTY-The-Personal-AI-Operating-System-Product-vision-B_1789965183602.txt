@@ -1,0 +1,2642 @@
+NUTTY
+The Personal AI Operating System
+Product vision
+Build NUTTY, a premium modern personal AI operating system designed to help a person understand, organize, plan, improve, and manage their life.
+NUTTY is NOT simply:
+•	a chatbot
+•	a calendar
+•	a fitness tracker
+•	a productivity app
+•	a school planner
+•	a finance app
+•	a to-do list
+•	a voice assistant
+NUTTY combines these capabilities into one intelligent personal system.
+The long-term goal is:
+NUTTY should understand my life well enough to help me decide what to do, when to do it, why it matters, and how to execute it.
+The product should feel like a futuristic personal operating system rather than a traditional SaaS dashboard.
+Think:
+AI brain + personal memory + life database + planning engine + decision engine + execution layer + beautiful interface.
+The user should eventually be able to say:
+“NUTTY, what should I do right now?”
+And NUTTY should consider the user's actual:
+•	time
+•	calendar
+•	work
+•	school
+•	deadlines
+•	tasks
+•	goals
+•	fitness
+•	health-related information the user chooses to provide
+•	sleep
+•	energy
+•	finances
+•	location when explicitly authorized
+•	travel
+•	habits
+•	preferences
+•	commitments
+•	available resources
+•	priorities
+•	previous behavior
+•	current context
+Then provide a useful next action.
+________________________________________
+1. ABSOLUTE PRODUCT PRINCIPLES
+These rules are more important than individual features.
+Rule 1 — NEVER INVENT THE USER
+A new account must contain:
+•	no fake name
+•	no fake age
+•	no fake weight
+•	no fake goals
+•	no fake schedule
+•	no fake classes
+•	no fake work
+•	no fake workouts
+•	no fake nutrition
+•	no fake finances
+•	no fake sleep
+•	no fake readiness score
+•	no fake progress
+•	no fake achievements
+If information does not exist, NUTTY must say that it does not know yet.
+Example:
+Bad:
+“Your readiness is 86/100.”
+Good:
+“I don't have enough information to calculate your readiness yet. Tell me how you slept, your energy level, and whether you're sore.”
+NUTTY earns knowledge.
+________________________________________
+2. NUTTY MUST HAVE REAL AUTHENTICATION
+Implement:
+•	Create account
+•	Log in
+•	Log out
+•	Password reset
+•	Email verification
+•	Session persistence
+•	Protected routes
+•	Account settings
+•	Profile management
+•	Delete account
+•	Export personal data
+•	Privacy controls
+•	Optional OAuth/social login where supported
+•	Secure password handling
+•	Secure session handling
+•	Rate limiting
+•	Authentication error handling
+The first screen for a new user should NOT show a fake dashboard.
+It should show:
+Welcome to NUTTY
+Your Personal AI Operating System
+Then:
+Create account
+Log in
+________________________________________
+3. ZERO-DATA FIRST EXPERIENCE
+After signup, show a beautiful conversational onboarding experience.
+Do NOT ask 50 questions at once.
+Learn progressively.
+Start with the minimum information necessary.
+NUTTY should say something like:
+“Let's build your personal operating system. I'll learn about you over time instead of making you fill out a giant form.”
+Ask questions progressively.
+________________________________________
+4. PERSONAL IDENTITY MODEL
+Potential information:
+•	preferred name
+•	age
+•	birthday
+•	pronouns if desired
+•	country
+•	timezone
+•	preferred language
+•	currency
+•	units
+•	wake-up preferences
+•	sleep preferences
+•	communication style
+•	notification preferences
+•	accessibility preferences
+•	preferred planning style
+•	preferred level of AI autonomy
+Allow users to skip anything.
+________________________________________
+5. PERSONAL GOAL ENGINE
+Support:
+•	life goals
+•	fitness goals
+•	school goals
+•	career goals
+•	financial goals
+•	relationship goals
+•	creative goals
+•	learning goals
+•	health goals
+•	lifestyle goals
+•	travel goals
+•	personal development goals
+Goals can have:
+•	title
+•	description
+•	deadline
+•	priority
+•	importance
+•	motivation
+•	target
+•	current state
+•	milestones
+•	projects
+•	tasks
+•	habits
+•	progress
+•	obstacles
+•	dependencies
+•	estimated effort
+NUTTY should convert:
+Goal → outcome → milestones → projects → tasks → calendar actions
+Example:
+“I want to learn programming.”
+NUTTY can eventually turn that into:
+•	90-day objective
+•	weekly learning target
+•	courses/resources
+•	study sessions
+•	coding practice
+•	projects
+•	review sessions
+•	progress tracking
+________________________________________
+6. UNIVERSAL LIFE TIMELINE
+Create a central timeline representing the user's life.
+Possible timeline items:
+•	classes
+•	work
+•	meetings
+•	workouts
+•	meals
+•	study
+•	sleep
+•	appointments
+•	errands
+•	travel
+•	deadlines
+•	tasks
+•	habits
+•	events
+•	personal commitments
+•	reminders
+•	bills
+•	projects
+•	exams
+•	assignments
+•	trips
+NUTTY should understand conflicts.
+Example:
+“You have an exam tomorrow, work until 6 PM, and planned a 90-minute workout. You only have approximately 3 hours available tonight. Would you like me to rebalance your evening?”
+________________________________________
+7. UNIVERSAL CALENDAR INTELLIGENCE
+Support:
+•	day
+•	week
+•	month
+•	agenda
+•	timeline
+•	recurring events
+•	flexible events
+•	hard commitments
+•	soft commitments
+•	deadlines
+•	time blocks
+•	focus blocks
+•	travel time
+•	buffer time
+•	recovery time
+•	preparation time
+•	task duration
+•	event conflicts
+•	schedule optimization
+Eventually integrate authorized external calendars.
+NUTTY should distinguish:
+Must happen
+Should happen
+Could happen
+________________________________________
+8. THE “WHAT SHOULD I DO?” ENGINE
+This is one of the most important features in the entire product.
+Create a prominent universal action:
+WHAT SHOULD I DO?
+When pressed, NUTTY evaluates available context.
+Potential inputs:
+•	current time
+•	current date
+•	calendar
+•	deadlines
+•	tasks
+•	goals
+•	work
+•	school
+•	workout plan
+•	missed workouts
+•	recovery
+•	sleep
+•	energy
+•	available time
+•	location if authorized
+•	travel time
+•	habits
+•	priorities
+•	commitments
+•	unfinished tasks
+•	upcoming events
+•	personal preferences
+Then provide:
+NOW
+The most useful next action.
+NEXT
+What should happen after that.
+LATER
+What can wait.
+Always explain:
+WHY
+Example:
+“You have 42 minutes before class. Your assignment is due tomorrow and your energy is moderate. I recommend doing the introduction and first two questions now. Your workout can move to tonight.”
+The user must be able to:
+•	Accept
+•	Modify
+•	Skip
+•	Ask why
+•	Ask for alternatives
+________________________________________
+9. AI DECISION ENGINE
+Build a central decision system.
+Inputs:
+•	urgency
+•	importance
+•	deadlines
+•	goals
+•	available time
+•	energy
+•	difficulty
+•	dependencies
+•	consequences
+•	user preferences
+•	historical behavior
+Never blindly optimize productivity.
+The system should recognize:
+•	rest
+•	recovery
+•	leisure
+•	social time
+•	sleep
+•	mental breaks
+A good personal OS should help the user live, not turn life into an endless task list.
+________________________________________
+10. WORK OS
+Support:
+•	jobs
+•	employers
+•	work hours
+•	shifts
+•	projects
+•	tasks
+•	meetings
+•	deadlines
+•	recurring responsibilities
+•	work goals
+•	priorities
+•	estimated effort
+•	project status
+•	notes
+•	documents
+•	follow-ups
+•	professional development
+•	career goals
+•	performance objectives
+•	meeting preparation
+•	meeting follow-up
+•	work reminders
+•	focus blocks
+•	deep work
+•	admin work
+•	break planning
+•	commute planning
+Future integrations may include:
+•	work calendars
+•	task systems
+•	email
+•	project management systems
+•	communication systems
+Only access external services after explicit authorization.
+________________________________________
+11. SCHOOL / STUDENT OS
+Support:
+•	schools
+•	universities
+•	subjects
+•	courses
+•	classes
+•	lecturers
+•	assignments
+•	projects
+•	exams
+•	quizzes
+•	deadlines
+•	study sessions
+•	notes
+•	grades
+•	target grades
+•	study goals
+•	revision schedules
+•	flashcards
+•	practice questions
+•	study streaks
+•	course progress
+•	semester planning
+•	academic workload
+•	assignment decomposition
+•	exam countdowns
+•	study priority
+•	study-time estimation
+Example:
+“You have three assignments due this week. NUTTY has identified the one with the earliest deadline and highest estimated effort.”
+________________________________________
+12. FITNESS OS
+Fitness remains a major NUTTY module.
+Support:
+•	goals
+•	body metrics
+•	training experience
+•	exercises
+•	workouts
+•	programs
+•	sets
+•	reps
+•	weight
+•	RPE/RIR
+•	rest periods
+•	progression
+•	personal records
+•	recovery
+•	soreness
+•	mobility
+•	conditioning
+•	cardio
+•	exercise substitutions
+•	gym equipment
+•	gym schedule
+•	training preferences
+•	training availability
+•	missed workouts
+•	travel workouts
+•	home workouts
+•	gym workouts
+________________________________________
+13. ADVANCED TRAINING INTELLIGENCE
+Implement systems for:
+•	automatic progressive overload
+•	weight recommendations
+•	rep recommendations
+•	set recommendations
+•	volume tracking
+•	intensity tracking
+•	training frequency
+•	muscle-group frequency
+•	exercise history
+•	PR tracking
+•	estimated 1RM
+•	fatigue tracking
+•	recovery tracking
+•	deload suggestions
+•	workout duration optimization
+•	exercise substitutions
+•	equipment-aware programming
+•	time-aware workouts
+•	beginner/intermediate/advanced programming
+•	workout density
+•	warmups
+•	cooldowns
+Never prescribe based on fabricated history.
+________________________________________
+14. MISSED WORKOUT INTELLIGENCE
+Example:
+User misses Monday legs.
+NUTTY checks:
+•	Tuesday schedule
+•	Wednesday schedule
+•	Thursday schedule
+•	Friday schedule
+•	Saturday availability
+•	Sunday availability
+•	work
+•	school
+•	existing training
+•	recovery
+•	time available
+Then dynamically proposes options.
+Example:
+“You missed legs yesterday. You have 35 minutes free tomorrow and Saturday is flexible. I can either shorten tomorrow's workout or move legs to Saturday. Which do you prefer?”
+Never hardcode a particular user's schedule.
+________________________________________
+15. FITNESS READINESS
+Readiness should only be calculated from actual available information.
+Potential signals:
+•	sleep
+•	energy
+•	soreness
+•	stress
+•	motivation
+•	recent training
+•	training volume
+•	rest
+•	subjective recovery
+•	relevant user-provided health information
+If insufficient data:
+“Not enough information yet.”
+Never manufacture a number.
+________________________________________
+16. NUTRITION OS
+Support:
+•	calorie targets
+•	macro targets
+•	meal planning
+•	food preferences
+•	allergies
+•	dietary restrictions
+•	budget
+•	grocery planning
+•	meal timing
+•	meal history
+•	food database
+•	recipes
+•	restaurant mode
+•	takeaway mode
+•	food substitutions
+•	meal prep
+•	leftovers
+•	food inventory
+•	shopping lists
+The nutrition system should be configurable rather than assuming a specific diet.
+________________________________________
+17. FOOD INTELLIGENCE
+Potential capabilities:
+•	food photo analysis
+•	barcode scanning
+•	receipt scanning
+•	meal logging
+•	nutrition estimation
+•	ingredient recognition
+•	portion estimation
+•	“Can I eat this?”
+•	healthier alternatives
+•	budget alternatives
+•	high-protein alternatives
+•	meal recommendations
+•	restaurant choices
+•	grocery optimization
+•	pantry tracking
+•	expiry reminders
+Clearly communicate uncertainty when food analysis is an estimate.
+________________________________________
+18. MONEY OS
+Create an optional financial module.
+Support:
+•	income
+•	expenses
+•	budgets
+•	savings goals
+•	subscriptions
+•	recurring bills
+•	spending categories
+•	financial goals
+•	emergency fund tracking
+•	planned purchases
+•	shopping budgets
+•	monthly cash-flow overview
+•	bill reminders
+•	subscription review
+•	savings progress
+External financial data must NEVER be accessed without explicit authorization.
+Do not make unsupported financial claims.
+________________________________________
+19. SHOPPING INTELLIGENCE
+Support:
+•	grocery lists
+•	school supplies
+•	work supplies
+•	gym equipment
+•	clothing
+•	electronics
+•	household items
+•	gifts
+•	recurring purchases
+•	shopping budgets
+•	wishlists
+•	price tracking where supported
+•	purchase planning
+•	duplicate detection
+•	priority ranking
+Allow:
+Need now
+Need soon
+Want
+Maybe
+________________________________________
+20. HOME & LIFE MANAGEMENT
+Support:
+•	cleaning
+•	laundry
+•	chores
+•	household tasks
+•	maintenance
+•	errands
+•	appointments
+•	shopping
+•	cooking
+•	meal prep
+•	room organization
+•	recurring household responsibilities
+•	vehicle reminders
+•	document reminders
+•	important dates
+________________________________________
+21. HABIT OS
+Support:
+•	habits
+•	routines
+•	streaks
+•	habit frequency
+•	habit triggers
+•	habit stacking
+•	completion history
+•	missed habits
+•	recovery after missed days
+•	habit difficulty
+•	habit suggestions
+•	routine templates
+Do not shame users for missing habits.
+________________________________________
+22. MORNING OS
+Optional morning briefing:
+•	today's schedule
+•	important deadlines
+•	priorities
+•	workout
+•	school
+•	work
+•	reminders
+•	weather if authorized/available
+•	travel considerations
+•	key goals
+•	suggested first action
+Never overwhelm the user.
+Allow:
+Quick briefing
+Detailed briefing
+________________________________________
+23. EVENING OS
+Optional evening review:
+•	completed tasks
+•	unfinished tasks
+•	tomorrow's priorities
+•	workout summary
+•	study summary
+•	important deadlines
+•	habit status
+•	planning
+•	reflection
+•	preparation for tomorrow
+________________________________________
+24. WEEKLY REVIEW
+Generate an intelligent weekly review from actual data.
+Include:
+•	accomplishments
+•	unfinished tasks
+•	goal progress
+•	fitness progress
+•	school progress
+•	work progress
+•	habits
+•	spending if connected
+•	upcoming deadlines
+•	schedule pressure
+•	opportunities
+•	problems
+•	next-week priorities
+Do not fabricate metrics.
+________________________________________
+25. MONTHLY REVIEW
+Analyze:
+•	goals
+•	habits
+•	projects
+•	schedule
+•	fitness
+•	school
+•	work
+•	finances if connected
+•	personal development
+Show trends only when enough historical data exists.
+________________________________________
+26. 90-DAY PLANNING
+Allow users to define major objectives.
+NUTTY converts them into:
+90-day goals
+→ monthly milestones
+→ weekly objectives
+→ daily actions
+Support multiple simultaneous goals while detecting overload.
+Example:
+User:
+“I want to get fit, pass my exams, save money, and learn coding.”
+NUTTY should identify conflicts and help create a realistic plan.
+________________________________________
+27. PROJECT MANAGEMENT
+Support:
+•	projects
+•	milestones
+•	tasks
+•	subtasks
+•	dependencies
+•	deadlines
+•	status
+•	priorities
+•	notes
+•	files
+•	links
+•	progress
+•	estimated effort
+•	actual effort
+Projects can belong to:
+•	school
+•	work
+•	fitness
+•	money
+•	personal life
+•	creative work
+•	learning
+________________________________________
+28. UNIVERSAL TASK ENGINE
+Every task should support:
+•	title
+•	description
+•	priority
+•	deadline
+•	estimated duration
+•	energy level
+•	category
+•	project
+•	goal
+•	dependencies
+•	recurring status
+•	location
+•	notes
+•	completion state
+Allow natural language:
+“Remind me to study chemistry tomorrow after work.”
+NUTTY should convert that into structured information.
+________________________________________
+29. SMART TASK BREAKDOWN
+User:
+“I need to start my business.”
+NUTTY should ask enough questions to understand the goal and potentially break it into:
+•	research
+•	idea validation
+•	business model
+•	branding
+•	legal/admin
+•	product development
+•	marketing
+•	finances
+•	launch
+Never assume details that haven't been provided.
+________________________________________
+30. TIME INTELLIGENCE
+Estimate:
+•	task duration
+•	travel time
+•	setup time
+•	transition time
+•	recovery time
+•	preparation time
+Avoid scheduling impossible back-to-back commitments.
+________________________________________
+31. ENERGY-AWARE PLANNING
+Learn user patterns over time.
+Example:
+“You usually complete difficult study sessions more successfully in the afternoon.”
+Present this as an observation based on actual history, not a diagnosis.
+Use energy preferences to plan:
+•	deep work
+•	exercise
+•	studying
+•	errands
+•	administrative tasks
+•	creative work
+________________________________________
+32. TRAVEL OS
+Support:
+•	trips
+•	destinations
+•	travel dates
+•	itineraries
+•	transportation
+•	accommodation
+•	packing lists
+•	travel tasks
+•	travel budgets
+•	timezone changes
+•	workout adaptations
+•	study adaptations
+•	work adaptations
+External travel services require authorization.
+________________________________________
+33. LOCATION-AWARE INTELLIGENCE
+OPTIONAL.
+Only use location when the user explicitly enables a supported location capability.
+Potential uses:
+•	commute planning
+•	nearby errands
+•	gym proximity
+•	shopping
+•	travel time
+•	reminders based on location
+Always make location access transparent.
+________________________________________
+34. PERSONAL MEMORY
+Build structured memory.
+Memory categories:
+•	preferences
+•	goals
+•	routines
+•	important dates
+•	recurring commitments
+•	personal rules
+•	dislikes
+•	likes
+•	planning preferences
+•	fitness preferences
+•	food preferences
+•	study preferences
+•	work preferences
+Memory must be:
+•	explainable
+•	user-controlled
+•	editable
+•	removable
+•	privacy-conscious
+NUTTY should be able to explain:
+“I suggested this because you previously told me you prefer training after work.”
+________________________________________
+35. CONTEXT ENGINE
+NUTTY should combine information from multiple modules.
+Example:
+School deadline + work schedule + gym schedule + sleep + goal
+should become one context model.
+Do NOT build every module as an isolated mini-app.
+________________________________________
+36. NATURAL LANGUAGE INTERFACE
+The user should be able to say:
+•	“Plan my day.”
+•	“What should I do?”
+•	“I'm tired.”
+•	“I missed my workout.”
+•	“I have an exam Friday.”
+•	“I need to save money.”
+•	“Move this.”
+•	“Make this shorter.”
+•	“Why?”
+•	“What am I forgetting?”
+•	“What should I prioritize?”
+•	“Show me everything important today.”
+•	“I have 30 minutes.”
+•	“I don't feel like doing that.”
+•	“Give me another option.”
+NUTTY should understand context rather than treating every message as an isolated question.
+________________________________________
+37. UNIVERSAL COMMAND BAR
+Add a global command interface.
+Examples:
+/plan
+/task
+/goal
+/workout
+/meal
+/study
+/money
+/calendar
+/remember
+/analyze
+/summarize
+But natural language should remain the primary interface.
+________________________________________
+38. VOICE INTERFACE
+Build architecture for:
+•	speech-to-text
+•	text-to-speech
+•	voice commands
+•	conversational voice sessions
+•	hands-free interaction
+•	interruption handling
+•	short responses
+•	detailed responses
+The voice assistant should use the same personal context as the text assistant.
+________________________________________
+39. PROACTIVE AI
+Eventually NUTTY can proactively notify users when useful.
+Examples:
+“You have an assignment due tomorrow and haven't started it.”
+“Your schedule tomorrow is unusually full.”
+“You haven't planned your workout yet.”
+“You have 45 minutes free before your next commitment.”
+But proactive notifications must be configurable.
+Controls:
+•	Off
+•	Low
+•	Balanced
+•	High
+________________________________________
+40. NOTIFICATION INTELLIGENCE
+Support:
+•	reminders
+•	deadlines
+•	calendar alerts
+•	habit reminders
+•	workout reminders
+•	study reminders
+•	bill reminders
+•	preparation reminders
+•	travel reminders
+Avoid notification spam.
+________________________________________
+41. “I'M OVERWHELMED” MODE
+This should be a major feature.
+User:
+“NUTTY, I'm overwhelmed.”
+NUTTY should:
+1.	identify urgent commitments
+2.	identify deadlines
+3.	identify optional tasks
+4.	reduce the immediate workload
+5.	create a short action plan
+6.	avoid judgment
+7.	prioritize essentials
+8.	suggest what can wait
+Example:
+“Let's simplify today. You have three important things. We'll handle them one at a time.”
+________________________________________
+42. FOCUS MODE
+Support:
+•	focus sessions
+•	timers
+•	website/app blocking where supported
+•	task selection
+•	music integration where supported
+•	break reminders
+•	session history
+________________________________________
+43. DEEP WORK MODE
+User chooses:
+•	task
+•	duration
+•	environment
+NUTTY prepares the session.
+At the end:
+•	completion
+•	remaining work
+•	next step
+________________________________________
+44. RECOVERY MODE
+If the user has too much scheduled:
+NUTTY can propose:
+•	reducing optional tasks
+•	moving tasks
+•	shorter workouts
+•	breaks
+•	sleep priority
+•	lighter workload
+Do not provide medical diagnoses.
+________________________________________
+45. LEARNING OS
+Support:
+•	learning goals
+•	courses
+•	books
+•	tutorials
+•	projects
+•	notes
+•	flashcards
+•	practice
+•	revision
+•	spaced repetition
+•	quizzes
+•	progress tracking
+________________________________________
+46. AI TUTOR
+For learning:
+•	explain concepts
+•	simplify concepts
+•	create examples
+•	generate practice questions
+•	test knowledge
+•	identify weak areas
+•	create revision plans
+•	explain mistakes
+For schoolwork, help users learn rather than simply pretending work is theirs.
+________________________________________
+47. KNOWLEDGE BASE
+Allow users to organize:
+•	notes
+•	PDFs
+•	documents
+•	links
+•	images
+•	personal reference material
+NUTTY can answer questions using authorized user content.
+________________________________________
+48. DOCUMENT INTELLIGENCE
+Support:
+•	summarization
+•	extraction
+•	action-item extraction
+•	deadline extraction
+•	important-date extraction
+•	document comparison
+•	question answering
+•	organization
+________________________________________
+49. EMAIL INTELLIGENCE
+Optional integration.
+Capabilities:
+•	summarize emails
+•	identify important messages
+•	identify deadlines
+•	extract action items
+•	draft replies
+•	categorize messages
+•	remind user about unanswered messages
+Never send messages without explicit authorization unless the user has deliberately configured an automation.
+________________________________________
+50. MEETING INTELLIGENCE
+Support:
+•	meeting preparation
+•	agenda generation
+•	notes
+•	action items
+•	follow-ups
+•	deadline extraction
+•	meeting summaries
+________________________________________
+51. COMMUNICATION ASSISTANT
+Help draft:
+•	emails
+•	messages
+•	professional replies
+•	school messages
+•	reminders
+•	invitations
+•	requests
+•	apologies
+•	follow-ups
+Always let the user review before sending.
+________________________________________
+52. PERSONAL DASHBOARD
+Create a premium dashboard showing only useful information.
+Potential sections:
+NOW
+Current recommended action.
+TODAY
+Schedule and priorities.
+GOALS
+Current objectives.
+LIFE
+Important upcoming items.
+FITNESS
+Only when relevant.
+SCHOOL
+Only when relevant.
+WORK
+Only when relevant.
+MONEY
+Only when enabled.
+AI INSIGHT
+One useful observation.
+Do not overload the screen.
+________________________________________
+53. ADAPTIVE UI
+The interface should change according to context.
+If the user is in:
+•	Fitness Mode → fitness information becomes prominent
+•	School Mode → academic information becomes prominent
+•	Work Mode → work information becomes prominent
+•	Travel Mode → travel information becomes prominent
+But all modules remain connected.
+________________________________________
+54. PERSONALIZATION ENGINE
+Allow users to choose:
+•	dark/light appearance
+•	accent color
+•	density
+•	dashboard layout
+•	notification frequency
+•	AI personality
+•	response length
+•	planning style
+•	automation level
+________________________________________
+55. NUTTY PERSONALITY
+NUTTY should feel:
+•	intelligent
+•	calm
+•	supportive
+•	direct
+•	practical
+•	proactive
+•	non-judgmental
+•	human
+•	concise when appropriate
+•	detailed when necessary
+Never pretend to have emotions or personal experiences.
+________________________________________
+56. AI EXPLANATIONS
+For important recommendations:
+Show:
+WHY?
+Example:
+“I moved your workout because you have a 2-hour exam preparation block tonight and only 25 minutes available. I shortened the workout rather than removing it.”
+________________________________________
+57. ALTERNATIVES
+Every major recommendation can offer:
+•	Best fit
+•	Shorter
+•	Easier
+•	More aggressive
+•	Move to later
+•	Skip
+Do not force a recommendation.
+________________________________________
+58. USER CONTROL
+Major actions should support:
+Accept
+Edit
+Reject
+Ask why
+NUTTY assists.
+The user remains in control.
+________________________________________
+59. AUTOMATION ENGINE
+Create a foundation for user-defined automations.
+Examples:
+Every Sunday evening, plan my upcoming week.
+Every weekday morning, give me my priorities.
+If I miss a workout, suggest a recovery plan.
+If an assignment is due in 48 hours and isn't started, notify me.
+When I arrive at the gym, show today's workout.
+Automations require explicit user configuration.
+________________________________________
+60. RULE ENGINE
+Allow:
+IF condition
+THEN suggestion/action
+Examples:
+IF workout missed
+THEN recalculate weekly training plan.
+IF deadline approaching
+THEN increase task priority.
+IF calendar conflict
+THEN propose alternatives.
+IF user has 20 minutes
+THEN recommend tasks that fit 20 minutes.
+________________________________________
+61. “I HAVE 10 MINUTES” ENGINE
+User can say:
+“I have 10 minutes.”
+NUTTY finds useful actions that fit.
+Examples:
+•	answer email
+•	review flashcards
+•	prepare gym bag
+•	clean room
+•	plan tomorrow
+•	complete a small task
+________________________________________
+62. “I HAVE 30 MINUTES” ENGINE
+Same principle, but more powerful.
+Use:
+•	current goals
+•	deadlines
+•	location
+•	energy
+•	context
+________________________________________
+63. LIFE BOTTLENECK DETECTION
+Analyze actual data for bottlenecks.
+Potential examples:
+•	too many commitments
+•	unrealistic schedules
+•	repeated missed tasks
+•	lack of preparation
+•	excessive context switching
+•	insufficient planning time
+Present observations carefully.
+________________________________________
+64. PATTERN DETECTION
+Over time identify patterns such as:
+•	repeated procrastination around certain tasks
+•	preferred training times
+•	common schedule conflicts
+•	recurring missed habits
+•	spending patterns if connected
+•	study patterns
+•	work patterns
+Always distinguish:
+Observed pattern
+from
+assumption
+________________________________________
+65. PERSONAL EXPERIMENTS
+Allow:
+“I want to try waking up earlier for two weeks.”
+NUTTY can create:
+•	experiment
+•	baseline
+•	target
+•	reminders
+•	tracking
+•	review
+________________________________________
+66. WHAT-IF SIMULATOR
+Allow users to ask:
+“What happens if I train four days instead of five?”
+“What if I work 10 extra hours?”
+“What if I study 1 hour a day?”
+NUTTY can model potential scheduling consequences.
+Clearly label simulations as estimates.
+________________________________________
+67. GOAL CONFLICT DETECTION
+Example:
+User wants:
+•	more work
+•	more school
+•	more gym
+•	more sleep
+•	more free time
+NUTTY should identify that available time is finite.
+Instead of pretending everything fits:
+“These goals currently exceed your available weekly time. We need to change duration, frequency, or priority.”
+________________________________________
+68. LIFE CAPACITY MODEL
+Track approximate available capacity:
+•	hours
+•	energy
+•	money
+•	attention
+•	recovery
+Do not present estimates as objective truths.
+________________________________________
+69. DIGITAL TWIN / PERSONAL MODEL
+Create a structured representation of:
+•	goals
+•	commitments
+•	preferences
+•	routines
+•	history
+•	projects
+•	tasks
+•	habits
+•	schedule
+•	modules
+•	constraints
+Call this the:
+NUTTY Personal Model
+This is the central brain context.
+________________________________________
+70. PERSONAL MODEL TIMELINE
+Track how the user's life model changes.
+Examples:
+•	new job
+•	new semester
+•	changed gym schedule
+•	new goal
+•	changed budget
+•	new routine
+NUTTY should use current information over stale information.
+________________________________________
+71. DATA CONFIDENCE
+Every important piece of information should conceptually have:
+•	source
+•	timestamp
+•	confidence
+•	user-confirmed status
+For example:
+Gym schedule
+Source: user
+Confirmed: yes
+Last updated: recent
+________________________________________
+72. SOURCE-AWARE AI
+NUTTY should distinguish:
+User told me
+Calendar says
+Imported from integration
+Calculated
+Estimated
+AI suggestion
+This makes the system trustworthy.
+________________________________________
+73. NO HALLUCINATED PERSONAL FACTS
+Never say:
+“You usually train at 6 PM.”
+unless actual data supports that.
+Instead:
+“You've trained at 6 PM four times in the last two weeks.”
+when the data actually supports it.
+________________________________________
+74. PRIVACY CENTER
+Create a dedicated privacy center.
+Show:
+•	stored information
+•	connected services
+•	permissions
+•	memory
+•	data exports
+•	deletion
+•	AI data settings
+•	notifications
+•	location permissions
+•	financial permissions
+•	calendar permissions
+________________________________________
+75. INTEGRATION CENTER
+Create an integrations hub.
+Potential future integrations:
+•	calendar
+•	email
+•	cloud storage
+•	health/activity platforms
+•	financial services
+•	task managers
+•	education platforms
+•	work tools
+•	maps/location
+•	music
+•	smart-home systems
+Never pretend an integration is connected.
+If unsupported:
+“This integration isn't connected yet.”
+________________________________________
+76. ACTION LAYER
+NUTTY should eventually move from:
+Tell me what to do
+to:
+Help me do it
+Examples:
+•	create calendar event
+•	create task
+•	move task
+•	draft email
+•	create shopping list
+•	create workout
+•	create study session
+•	generate plan
+•	set reminder
+Actions should require appropriate confirmation.
+________________________________________
+77. APPROVAL SYSTEM
+Sensitive actions should require confirmation.
+Examples:
+•	sending messages
+•	purchases
+•	financial actions
+•	deleting information
+•	changing important calendar events
+•	sharing personal data
+Use:
+Preview → Confirm → Execute
+________________________________________
+78. ACTION HISTORY
+Show:
+•	what NUTTY suggested
+•	what user accepted
+•	what was executed
+•	what was rejected
+•	when it happened
+________________________________________
+79. UNDO
+Where technically possible:
+•	undo changes
+•	restore previous schedule
+•	restore deleted tasks
+•	reverse AI planning changes
+________________________________________
+80. EMERGENCY / SAFETY BOUNDARIES
+NUTTY must not pretend to replace:
+•	doctors
+•	emergency services
+•	lawyers
+•	financial professionals
+•	therapists
+•	other qualified professionals
+For high-stakes topics, provide appropriate caution and encourage professional help when necessary.
+________________________________________
+81. FITNESS SAFETY
+Do not diagnose injuries.
+If the user reports serious pain, injury, or concerning symptoms, NUTTY should recommend appropriate professional evaluation rather than confidently prescribing around the problem.
+________________________________________
+82. FINANCIAL SAFETY
+Do not make guarantees.
+Clearly distinguish:
+•	calculation
+•	general information
+•	estimate
+•	recommendation
+________________________________________
+83. EDUCATION INTEGRITY
+Help users learn.
+Do not encourage cheating or misrepresenting AI-generated work as their own where academic rules prohibit it.
+________________________________________
+84. SECURITY ARCHITECTURE
+Use secure architecture.
+Requirements:
+•	server-side authorization
+•	input validation
+•	secure authentication
+•	protected APIs
+•	encrypted sensitive data where appropriate
+•	least-privilege integrations
+•	secrets stored securely
+•	no API keys exposed to clients
+•	audit logging for sensitive actions
+•	rate limiting
+•	secure file handling
+________________________________________
+85. DATABASE ARCHITECTURE
+Design a scalable relational data model.
+Core entities may include:
+•	users
+•	profiles
+•	preferences
+•	goals
+•	goal_milestones
+•	projects
+•	tasks
+•	subtasks
+•	habits
+•	routines
+•	calendar_events
+•	commitments
+•	work_items
+•	school_courses
+•	assignments
+•	exams
+•	workouts
+•	exercises
+•	workout_logs
+•	nutrition_logs
+•	foods
+•	meals
+•	sleep_logs
+•	readiness_logs
+•	body_metrics
+•	financial_records
+•	subscriptions
+•	shopping_items
+•	trips
+•	notes
+•	documents
+•	memories
+•	conversations
+•	AI_insights
+•	recommendations
+•	actions
+•	automations
+•	integrations
+•	permissions
+•	audit_logs
+Design relationships carefully.
+________________________________________
+86. AI ARCHITECTURE
+Do not put the entire application logic into one giant prompt.
+Create a modular AI architecture.
+Potential services:
+Context Engine
+Collects relevant context.
+Personal Model
+Stores structured user knowledge.
+Memory Engine
+Manages long-term memories.
+Planning Engine
+Creates plans.
+Decision Engine
+Chooses useful next actions.
+Recommendation Engine
+Generates suggestions.
+Action Engine
+Executes approved actions.
+Reflection Engine
+Analyzes outcomes.
+Safety Layer
+Checks sensitive outputs/actions.
+________________________________________
+87. AI CONTEXT MANAGEMENT
+Do not send the entire database into every AI request.
+Build relevant-context retrieval.
+Example:
+Fitness question → retrieve relevant fitness context.
+School question → retrieve school context.
+Life planning → retrieve cross-domain context.
+________________________________________
+88. MEMORY TYPES
+Separate:
+Short-term context
+Current conversation.
+Working memory
+Current day's relevant information.
+Long-term memory
+Stable user preferences and facts.
+Historical records
+Past events and measurements.
+Derived insights
+Patterns calculated from actual data.
+________________________________________
+89. MEMORY CONSENT
+Some information should only become long-term memory when:
+•	explicitly saved
+•	clearly stable and appropriate
+•	user confirms when necessary
+Allow users to control memory.
+________________________________________
+90. AI CHAT
+Chat should not be a standalone generic chatbot.
+It must have access to appropriate NUTTY context.
+The user should be able to ask:
+“Why did you move my workout?”
+and NUTTY should know the actual decision.
+________________________________________
+91. CONVERSATION CONTINUITY
+Support:
+•	current conversation context
+•	relevant previous conversations
+•	action history
+•	saved memories
+•	user preferences
+Avoid pretending to remember things that aren't stored.
+________________________________________
+92. AI INSIGHT ENGINE
+Generate useful insights from actual data.
+Examples:
+“You have three deadlines within 48 hours.”
+“Your current plan has 12 hours of scheduled work but only 8 hours available.”
+“Your workout schedule conflicts with your new class schedule.”
+Insights must have supporting data.
+________________________________________
+93. PERSONAL ANALYTICS
+Create analytics for:
+•	goals
+•	tasks
+•	habits
+•	time
+•	fitness
+•	study
+•	work
+•	finances when connected
+Use charts only when they add value.
+________________________________________
+94. PROGRESS VISUALIZATION
+Use:
+•	timelines
+•	progress rings
+•	trend charts
+•	milestone maps
+•	calendars
+•	heatmaps
+•	goal trees
+Avoid meaningless gamification.
+________________________________________
+95. MISSION SYSTEM
+Optional gamification:
+•	missions
+•	milestones
+•	streaks
+•	achievements
+Never make users feel bad for missing goals.
+________________________________________
+96. LIFE SCORE — OPTIONAL
+If implemented, NEVER create a fake arbitrary “life score.”
+Instead use specific measurable indicators.
+Examples:
+•	Goal progress
+•	Task completion
+•	Training consistency
+•	Study hours
+•	Savings progress
+Do not reduce a person's life to one meaningless number.
+________________________________________
+97. SMART WEEK PLANNER
+Every week NUTTY can optionally generate:
+•	commitments
+•	goals
+•	priorities
+•	workouts
+•	study
+•	work
+•	errands
+•	recovery
+•	personal time
+The user can modify it.
+________________________________________
+98. SMART DAY PLANNER
+Generate a realistic day plan based on actual commitments.
+Respect:
+•	travel
+•	breaks
+•	meals
+•	sleep
+•	work
+•	school
+•	workouts
+•	personal time
+________________________________________
+99. REAL-TIME REPLANNING
+If something changes:
+“My meeting was cancelled.”
+NUTTY should be able to recalculate the day's plan.
+If:
+“I'm running 30 minutes late.”
+NUTTY can suggest schedule adjustments.
+________________________________________
+100. LIFE RECOVERY ENGINE
+If the user falls behind, NUTTY should recover the plan.
+Not:
+“You failed.”
+Instead:
+“Your original plan no longer fits. Let's rebuild the rest of the week.”
+________________________________________
+101–200. EXPANSION CAPABILITY MATRIX
+Design the architecture so NUTTY can eventually support hundreds of additional capabilities, including:
+101.	Personal routines
+102.	Bedtime routines
+103.	Wake routines
+104.	Travel preparation
+105.	Packing assistant
+106.	Gift planning
+107.	Birthday reminders
+108.	Anniversary reminders
+109.	Important-date tracking
+110.	Appointment preparation
+111.	Appointment follow-up
+112.	Document expiration reminders
+113.	Passport reminders
+114.	License reminders
+115.	Insurance reminders
+116.	Vehicle maintenance reminders
+117.	Household inventory
+118.	Pantry inventory
+119.	Clothing inventory
+120.	Subscription tracking
+121.	Recurring-payment tracking
+122.	Price-watch infrastructure
+123.	Wishlist management
+124.	Personal reading list
+125.	Watch list
+126.	Music discovery
+127.	Hobby tracking
+128.	Creative projects
+129.	Photography projects
+130.	Writing projects
+131.	Coding projects
+132.	Portfolio projects
+133.	Career planning
+134.	Resume assistance
+135.	Interview preparation
+136.	Skill-gap analysis
+137.	Course recommendations
+138.	Certification tracking
+139.	Professional networking reminders
+140.	Contact management
+141.	Follow-up reminders
+142.	Relationship reminders
+143.	Social planning
+144.	Event planning
+145.	Party planning
+146.	Date planning
+147.	Meal planning
+148.	Recipe management
+149.	Cooking timer
+150.	Meal-prep planning
+151.	Grocery optimization
+152.	Leftover planning
+153.	Restaurant planning
+154.	Nutrition budget optimization
+155.	Training equipment tracking
+156.	Gym bag checklist
+157.	Workout preparation
+158.	Exercise history
+159.	Mobility routines
+160.	Cardio tracking
+161.	Running plans
+162.	Walking goals
+163.	Cycling plans
+164.	Sports training
+165.	Recovery tracking
+166.	Stretching reminders
+167.	Hydration reminders
+168.	Sleep routines
+169.	Sleep history
+170.	Rest-day planning
+171.	Travel workouts
+172.	Hotel workouts
+173.	Home workouts
+174.	Equipment-free workouts
+175.	Time-limited workouts
+176.	Exercise alternatives
+177.	Training progression
+178.	Training volume analysis
+179.	Training consistency
+180.	Personal-record history
+181.	Body measurement history
+182.	Progress-photo organization
+183.	Fitness milestone tracking
+184.	School semester planning
+185.	Course workload analysis
+186.	Assignment decomposition
+187.	Exam countdown
+188.	Revision planning
+189.	Flashcards
+190.	Practice tests
+191.	Weak-topic detection
+192.	Study streaks
+193.	Study analytics
+194.	Workload balancing
+195.	Meeting preparation
+196.	Meeting follow-up
+197.	Project planning
+198.	Career goals
+199.	Work performance tracking
+200.	Professional development
+________________________________________
+201–300. ADVANCED INTELLIGENCE CAPABILITIES
+Design for future support of:
+201.	Cross-domain scheduling
+202.	Goal conflict detection
+203.	Time-capacity planning
+204.	Energy-capacity planning
+205.	Financial-capacity planning
+206.	Deadline collision detection
+207.	Commitment overload detection
+208.	Automatic buffer insertion
+209.	Travel-time planning
+210.	Preparation-time planning
+211.	Context-switch reduction
+212.	Deep-work optimization
+213.	Break optimization
+214.	Recovery planning
+215.	Weekly workload balancing
+216.	Monthly workload balancing
+217.	Semester planning
+218.	Project portfolio planning
+219.	Long-term goal planning
+220.	1-year planning
+221.	3-year goal tracking
+222.	Personal milestone tracking
+223.	Life transition planning
+224.	New-job onboarding planning
+225.	New-semester onboarding
+226.	Moving-home planning
+227.	Travel planning
+228.	Exam-period planning
+229.	Vacation planning
+230.	Financial-goal planning
+231.	Savings projections
+232.	Purchase planning
+233.	Subscription analysis
+234.	Spending categorization
+235.	Budget alerts
+236.	Meal-budget planning
+237.	Fitness-budget planning
+238.	Study-budget planning
+239.	Personal resource allocation
+240.	Time audits
+241.	Habit pattern analysis
+242.	Task completion analysis
+243.	Procrastination pattern detection
+244.	Schedule realism detection
+245.	Goal feasibility analysis
+246.	Plan stress testing
+247.	What-if planning
+248.	Alternative plan generation
+249.	Recovery plan generation
+250.	Decision comparison
+251.	Pros/cons generation
+252.	Tradeoff visualization
+253.	Opportunity-cost explanations
+254.	Priority explanations
+255.	Recommendation explanations
+256.	AI confidence indicators
+257.	Source attribution
+258.	Data freshness tracking
+259.	Personal-data provenance
+260.	Memory conflict detection
+261.	Stale-memory detection
+262.	Duplicate-information detection
+263.	Contradiction detection
+264.	User confirmation prompts
+265.	Sensitive-action confirmation
+266.	Automation permissions
+267.	Integration permissions
+268.	Data export
+269.	Data deletion
+270.	Privacy audit
+271.	AI action history
+272.	Undo actions
+273.	Notification controls
+274.	Proactive AI controls
+275.	AI autonomy levels
+276.	Manual mode
+277.	Assisted mode
+278.	Proactive mode
+279.	Automation mode
+280.	Quiet mode
+281.	Focus mode
+282.	Recovery mode
+283.	Travel mode
+284.	Exam mode
+285.	Work mode
+286.	Fitness mode
+287.	Finance mode
+288.	Life mode
+289.	Planning mode
+290.	Reflection mode
+291.	Emergency-context awareness
+292.	Accessibility mode
+293.	Simplified UI mode
+294.	Voice-first mode
+295.	Mobile-first mode
+296.	Desktop mode
+297.	Tablet mode
+298.	Wearable-ready architecture
+299.	API-first architecture
+300.	Developer/API platform foundation
+________________________________________
+301–400. FUTURE NUTTY OS CAPABILITIES
+Architect the platform to eventually support:
+301.	Smart-home integration
+302.	Device control
+303.	Personal computer automation
+304.	File organization
+305.	Desktop workflows
+306.	App launching
+307.	Cross-device continuity
+308.	Universal notifications
+309.	Personal dashboard widgets
+310.	AI-generated widgets
+311.	Dynamic home screen
+312.	Contextual shortcuts
+313.	Voice activation
+314.	Natural-language device control
+315.	Personal search
+316.	Semantic search
+317.	Personal knowledge graph
+318.	Personal document graph
+319.	Personal relationship graph
+320.	Personal goal graph
+321.	Personal project graph
+322.	Personal timeline graph
+323.	Personal decision history
+324.	Decision outcome tracking
+325.	Recommendation outcome tracking
+326.	AI self-correction
+327.	User feedback learning
+328.	Preference learning
+329.	Planning-style learning
+330.	Communication-style learning
+331.	Schedule-pattern learning
+332.	Task-duration learning
+333.	Energy-pattern learning
+334.	Habit-pattern learning
+335.	Goal-progress learning
+336.	Adaptive recommendations
+337.	Adaptive notifications
+338.	Adaptive dashboards
+339.	Adaptive onboarding
+340.	Context-sensitive interface
+341.	AI-generated summaries
+342.	Daily briefing
+343.	Weekly briefing
+344.	Monthly briefing
+345.	Quarterly briefing
+346.	Annual review
+347.	Personal retrospective
+348.	Goal retrospective
+349.	Habit retrospective
+350.	Financial retrospective
+351.	Fitness retrospective
+352.	Study retrospective
+353.	Work retrospective
+354.	Life retrospective
+355.	Personal trend detection
+356.	Milestone prediction
+357.	Deadline risk detection
+358.	Workload risk detection
+359.	Schedule risk detection
+360.	Goal stagnation detection
+361.	Project stagnation detection
+362.	Missed-commitment recovery
+363.	Plan repair
+364.	Schedule repair
+365.	Goal repair
+366.	Routine repair
+367.	Habit recovery
+368.	Study recovery
+369.	Fitness recovery
+370.	Financial recovery planning
+371.	Personal challenge system
+372.	Personal experiments
+373.	Behavioral reflection
+374.	Journaling
+375.	Voice journaling
+376.	AI reflection prompts
+377.	Personal lessons database
+378.	Mistake tracking
+379.	Decision journal
+380.	Success-pattern tracking
+381.	Personal principles
+382.	Personal rules
+383.	Personal preferences
+384.	Personal boundaries
+385.	Personal priorities
+386.	Personal values
+387.	Personal vision
+388.	Personal mission
+389.	Life strategy planning
+390.	Long-term roadmap
+391.	Annual goals
+392.	Quarterly goals
+393.	Monthly goals
+394.	Weekly goals
+395.	Daily goals
+396.	Next-action engine
+397.	Universal command system
+398.	Universal search
+399.	Universal AI assistant
+400.	Personal operating system orchestration
+________________________________________
+401–500. NUTTY FUTURE PLATFORM
+The architecture should leave room for:
+401.	Plugin system
+402.	Third-party integrations
+403.	NUTTY API
+404.	Developer SDK
+405.	Custom AI agents
+406.	Personal workflows
+407.	Custom automations
+408.	Agent permissions
+409.	Agent approval systems
+410.	Multi-agent orchestration
+411.	Research agent
+412.	Planning agent
+413.	Fitness agent
+414.	Study agent
+415.	Work agent
+416.	Finance agent
+417.	Travel agent
+418.	Shopping agent
+419.	Communication agent
+420.	Personal assistant agent
+421.	Document agent
+422.	Scheduling agent
+423.	Data-analysis agent
+424.	Personal knowledge agent
+425.	Goal coach agent
+426.	Habit coach agent
+427.	Project manager agent
+428.	Life planner agent
+429.	Cross-domain coordinator
+430.	Agent task queues
+431.	Agent execution logs
+432.	Agent permission boundaries
+433.	Human approval checkpoints
+434.	Automation sandbox
+435.	External-action sandbox
+436.	Simulation environment
+437.	AI planning simulation
+438.	Scenario comparison
+439.	Personal digital twin infrastructure
+440.	Personal knowledge graph
+441.	Semantic memory
+442.	Vector search
+443.	Structured memory
+444.	Event sourcing
+445.	Audit history
+446.	Data lineage
+447.	Explainable recommendations
+448.	Explainable automation
+449.	Personalized AI policies
+450.	User-defined AI rules
+451.	User-defined priorities
+452.	User-defined constraints
+453.	User-defined boundaries
+454.	AI autonomy settings
+455.	AI personality settings
+456.	AI communication settings
+457.	AI planning settings
+458.	AI notification settings
+459.	AI privacy settings
+460.	AI memory settings
+461.	Cross-device synchronization
+462.	Offline-capable foundations where practical
+463.	Background processing
+464.	Scheduled AI tasks
+465.	Event-driven AI
+466.	Real-time updates
+467.	Intelligent caching
+468.	Scalable job queues
+469.	Observability
+470.	Error tracking
+471.	Performance monitoring
+472.	AI usage monitoring
+473.	Cost monitoring
+474.	Model routing
+475.	AI fallback models
+476.	Tool-use architecture
+477.	Retrieval architecture
+478.	Secure secret management
+479.	Permission management
+480.	Data retention controls
+481.	Account portability
+482.	Full data export
+483.	Account deletion
+484.	Privacy dashboard
+485.	Security dashboard
+486.	AI transparency dashboard
+487.	System health dashboard
+488.	Integration health dashboard
+489.	Automation health dashboard
+490.	Personal OS settings
+491.	Personal OS search
+492.	Personal OS command center
+493.	Personal OS activity feed
+494.	Personal OS notification center
+495.	Personal OS timeline
+496.	Personal OS memory center
+497.	Personal OS planning center
+498.	Personal OS decision center
+499.	Personal OS action center
+500.	NUTTY as a complete personal operating system
+________________________________________
+102. THE UI MUST FEEL PREMIUM
+Do NOT create a generic dashboard.
+NUTTY should feel like a premium 2026 AI product.
+Visual direction:
+•	dark-first
+•	futuristic
+•	minimal
+•	elegant
+•	intelligent
+•	cinematic
+•	smooth
+•	high-quality typography
+•	subtle gradients
+•	glass effects used carefully
+•	beautiful cards
+•	excellent spacing
+•	strong hierarchy
+•	responsive
+•	mobile-first
+•	desktop-ready
+•	accessible
+Use the NUTTY brand identity.
+Primary visual language:
+•	near-black background
+•	electric blue
+•	cyan
+•	violet
+•	subtle magenta
+•	soft glows
+•	clean white typography
+Do not make every element glow.
+The design should feel expensive rather than flashy.
+________________________________________
+103. NUTTY LOGO / APP IDENTITY
+Use the NUTTY logo direction:
+A futuristic stylized N with an orbital/AI-inspired element.
+The application should have:
+•	app icon
+•	splash screen
+•	login branding
+•	onboarding branding
+•	assistant avatar
+•	loading animation
+•	favicon
+•	mobile icon
+•	notification icon where appropriate
+Brand:
+NUTTY
+Subtitle:
+Your Personal AI OS
+________________________________________
+104. OPENING EXPERIENCE
+First launch:
+NUTTY logo appears.
+Subtle animation.
+Then:
+NUTTY
+Your Personal AI Operating System
+Then:
+“Let's build your system.”
+Do not show fake data.
+________________________________________
+105. DASHBOARD DESIGN
+The home screen should answer:
+What matters right now?
+Not:
+Here are 37 random widgets.
+The first element should be the user's current context.
+Example:
+Good morning.
+You have 3 important things today.
+1. Chemistry assignment — due tomorrow
+2. Work — 14:00
+3. Workout — 18:30
+Recommended next step
+Start the chemistry assignment for 30 minutes.
+________________________________________
+106. EMPTY STATES
+Every empty state should be useful.
+Instead of:
+“No data.”
+Use:
+“NUTTY doesn't know your schedule yet.”
+Button:
+Add my schedule
+Another:
+“You haven't created a goal yet.”
+Button:
+Create my first goal
+________________________________________
+107. NO DEMO DATA IN PRODUCTION
+Development seed data must be isolated.
+Never allow seed data to leak into real accounts.
+If demo mode exists, clearly label:
+DEMO MODE
+________________________________________
+108. ONBOARDING MUST BE ADAPTIVE
+Do not force all users through identical questions.
+Example:
+If user says:
+“I'm a student.”
+Ask school-related questions.
+If user says:
+“I work full-time.”
+Ask work-related questions.
+If user says:
+“I'm both.”
+Build both contexts.
+________________________________________
+109. NUTTY SHOULD ASK GOOD QUESTIONS
+Bad:
+“Enter 30 fields.”
+Good:
+“What takes up most of your time right now?”
+Then branch.
+The system should progressively discover:
+•	responsibilities
+•	goals
+•	constraints
+•	priorities
+•	preferences
+________________________________________
+110. USER'S LIFE SHOULD BE REPRESENTED AS A GRAPH
+Think in relationships:
+Goal
+→ Project
+→ Tasks
+→ Calendar
+Goal
+→ Habit
+Workout
+→ Fitness goal
+Assignment
+→ School course
+→ Exam
+Work project
+→ Deadline
+→ Meeting
+Trip
+→ Tasks
+→ Budget
+→ Calendar
+This enables cross-domain intelligence.
+________________________________________
+111. NUTTY SHOULD THINK IN CONTEXT
+If the user says:
+“I can't do my workout today.”
+NUTTY should not respond with a generic fitness answer.
+It should inspect the actual context available.
+Potential response:
+“You have 25 minutes free tomorrow morning, but your sleep was short. Saturday is currently open for 70 minutes. I can move the full session to Saturday or create a 25-minute version tomorrow.”
+________________________________________
+112. NUTTY SHOULD UNDERSTAND TRADEOFFS
+If the user has too much planned:
+Don't pretend everything fits.
+Say:
+“You currently have more planned than your available time allows.”
+Then offer options.
+________________________________________
+113. PERSONAL OS PRINCIPLE
+NUTTY should optimize for:
+the user's actual life
+not:
+maximum productivity
+Life includes:
+•	work
+•	school
+•	health
+•	fitness
+•	relationships
+•	rest
+•	fun
+•	hobbies
+•	sleep
+•	personal growth
+________________________________________
+114. AI SHOULD NEVER TAKE OVER THE USER'S LIFE
+NUTTY recommends.
+The user decides.
+For sensitive actions:
+Preview → Confirm → Execute.
+________________________________________
+115. BUILD ORDER
+DO NOT attempt to implement 500 features simultaneously.
+Build the system in phases.
+PHASE 1 — FOUNDATION
+Build first:
+•	authentication
+•	database
+•	user profile
+•	onboarding
+•	preferences
+•	personal model
+•	AI chat
+•	memory architecture
+•	tasks
+•	goals
+•	calendar
+•	dashboard
+•	universal command bar
+•	“What should I do?” engine
+•	responsive UI
+•	security
+•	settings
+•	privacy controls
+This must be production-quality.
+________________________________________
+PHASE 2 — PERSONAL OS CORE
+Build:
+•	planning engine
+•	decision engine
+•	daily planning
+•	weekly planning
+•	goal decomposition
+•	task intelligence
+•	reminders
+•	routines
+•	habits
+•	life timeline
+•	context engine
+•	proactive insights
+________________________________________
+PHASE 3 — FITNESS
+Build all major fitness capabilities from the original NUTTY fitness specification.
+________________________________________
+PHASE 4 — SCHOOL
+Build:
+•	classes
+•	subjects
+•	assignments
+•	exams
+•	study planning
+•	academic goals
+•	revision
+•	learning assistant
+________________________________________
+PHASE 5 — WORK
+Build:
+•	work schedule
+•	projects
+•	meetings
+•	deadlines
+•	tasks
+•	career goals
+•	work planning
+________________________________________
+PHASE 6 — MONEY
+Build optional:
+•	budgets
+•	spending
+•	savings
+•	bills
+•	subscriptions
+•	financial goals
+Use integrations only with explicit authorization.
+________________________________________
+PHASE 7 — LIFE
+Build:
+•	errands
+•	household
+•	shopping
+•	travel
+•	personal projects
+•	events
+•	relationships
+•	hobbies
+________________________________________
+PHASE 8 — ACTIONS & AUTOMATION
+Build:
+•	integrations
+•	automations
+•	reminders
+•	calendar actions
+•	email actions
+•	task actions
+•	approval system
+•	action history
+•	undo
+________________________________________
+PHASE 9 — ADVANCED AI
+Build:
+•	personal knowledge graph
+•	advanced memory
+•	pattern detection
+•	what-if simulations
+•	proactive intelligence
+•	multi-agent architecture
+•	personal digital twin
+•	cross-domain optimization
+________________________________________
+116. DEVELOPMENT REQUIREMENT
+At every phase:
+DO NOT fake features.
+If something is not implemented:
+show:
+“Coming soon”
+or
+“Connect an account to enable this.”
+Never create fake success states.
+________________________________________
+117. ERROR HANDLING
+Errors should be human.
+Bad:
+ERR_DB_4291
+Good:
+“NUTTY couldn't load your calendar. Try reconnecting it.”
+Provide recovery actions.
+________________________________________
+118. PERFORMANCE
+The application must feel fast.
+Use:
+•	lazy loading
+•	caching where appropriate
+•	optimistic UI only when safe
+•	efficient database queries
+•	pagination
+•	background jobs
+•	streaming AI responses where appropriate
+________________________________________
+119. MOBILE EXPERIENCE
+Design mobile-first.
+Important controls should be thumb-friendly.
+Bottom navigation can include:
+Home
+Plan
+NUTTY
+Goals
+More
+The AI command should always be easy to reach.
+________________________________________
+120. DESKTOP EXPERIENCE
+Desktop can expose:
+•	sidebar
+•	timeline
+•	dashboard
+•	calendar
+•	AI panel
+•	detailed analytics
+Use responsive behavior rather than creating a completely separate application.
+________________________________________
+121. ACCESSIBILITY
+Support:
+•	keyboard navigation
+•	readable contrast
+•	screen-reader-friendly structure
+•	reduced motion
+•	scalable text
+•	clear focus states
+•	accessible controls
+________________________________________
+122. TESTING
+Create tests for:
+•	signup
+•	login
+•	logout
+•	onboarding
+•	empty account
+•	adding goals
+•	adding tasks
+•	calendar
+•	AI context
+•	memory
+•	fitness
+•	school
+•	work
+•	notifications
+•	permissions
+•	privacy
+•	data deletion
+________________________________________
+123. CRITICAL TEST: BRAND-NEW USER
+Create a completely new account.
+Verify:
+There is:
+NO:
+•	fake name
+•	fake workout
+•	fake readiness
+•	fake schedule
+•	fake goals
+•	fake calories
+•	fake money
+•	fake school
+•	fake work
+•	fake memories
+The dashboard should correctly communicate that NUTTY is still learning.
+________________________________________
+124. CRITICAL TEST: REAL USER JOURNEY
+Test:
+1.	Sign up.
+2.	Complete basic onboarding.
+3.	Add a real goal.
+4.	Add school/work.
+5.	Add schedule.
+6.	Add fitness schedule.
+7.	Log sleep.
+8.	Log workout.
+9.	Miss a workout.
+10.	Ask NUTTY what to do.
+11.	Verify NUTTY considers actual context.
+12.	Change availability.
+13.	Verify the plan updates.
+14.	Add an assignment.
+15.	Create a study session.
+16.	Add a work commitment.
+17.	Ask NUTTY to plan the day.
+18.	Verify conflicts are identified.
+19.	Reject a recommendation.
+20.	Verify NUTTY does not execute it.
+21.	Accept a safe action.
+22.	Verify action history.
+________________________________________
+125. CRITICAL AI TEST
+Ask:
+“What do you know about me?”
+NUTTY must only report actual stored information.
+Then ask:
+“What don't you know about me?”
+NUTTY should identify missing context.
+Then ask:
+“What should I do right now?”
+NUTTY should use available real context.
+If there isn't enough context:
+NUTTY should ask a useful question instead of hallucinating.
+________________________________________
+126. CRITICAL PRINCIPLE
+The most important sentence in the entire codebase/product specification is:
+NUTTY must never pretend to know the user. NUTTY earns knowledge through onboarding, conversation, authorized integrations, and observed user-provided activity, and then uses that knowledge to become increasingly useful.
+________________________________________
+127. PRODUCT QUALITY BAR
+Do not build this like a school project.
+Build it like a serious startup product.
+Prioritize:
+•	reliability
+•	security
+•	speed
+•	beautiful design
+•	excellent UX
+•	maintainability
+•	scalable architecture
+•	clear data ownership
+•	explainable AI
+•	real functionality
+________________________________________
+128. IMPORTANT INSTRUCTION
+Before writing large amounts of code:
+1.	Inspect the existing application.
+2.	Identify what can be reused safely.
+3.	Identify demo/fake-data logic.
+4.	Identify architectural problems.
+5.	Create a technical implementation plan.
+6.	Create the database schema.
+7.	Create the authentication flow.
+8.	Create the Personal Model.
+9.	Create the context architecture.
+10.	Then implement.
+Do not blindly patch an existing demo if its architecture is fundamentally wrong.
+________________________________________
+129. DO NOT BUILD EVERYTHING INTO ONE FILE
+Use a clean modular architecture.
+Separate:
+•	authentication
+•	database
+•	AI
+•	memory
+•	planning
+•	tasks
+•	goals
+•	calendar
+•	fitness
+•	school
+•	work
+•	finance
+•	life
+•	integrations
+•	notifications
+•	automations
+•	permissions
+•	UI components
+________________________________________
+130. AI MODEL ABSTRACTION
+Do not hard-code the entire application around one AI provider.
+Create an abstraction layer so the underlying AI model can be changed later.
+The product should support future model upgrades without rewriting the entire application.
+________________________________________
+131. TOOL / ACTION ARCHITECTURE
+NUTTY's AI should conceptually operate through tools.
+Examples:
+•	get_calendar
+•	create_calendar_event
+•	get_tasks
+•	create_task
+•	update_task
+•	get_goals
+•	create_goal
+•	get_workouts
+•	create_workout
+•	get_assignments
+•	create_study_session
+•	get_budget
+•	create_reminder
+•	retrieve_memory
+•	save_memory
+Every tool must enforce authorization.
+________________________________________
+132. AI SHOULD NOT DIRECTLY MODIFY DATABASES
+Use validated application actions.
+AI proposes structured actions.
+Application validates them.
+User confirms when required.
+Then application executes.
+This is essential for reliability.
+________________________________________
+133. ACTION SCHEMA
+Conceptually:
+Intent
+→ Context
+→ Proposed action
+→ Validation
+→ User confirmation if required
+→ Execution
+→ Result
+→ Audit log
+________________________________________
+134. FUTURE AGENT ARCHITECTURE
+Eventually NUTTY can have specialized agents.
+For example:
+NUTTY Core
+Coordinates everything.
+Fitness Agent
+Handles fitness.
+Study Agent
+Handles learning.
+Work Agent
+Handles work.
+Finance Agent
+Handles budgeting.
+Travel Agent
+Handles travel.
+Planning Agent
+Coordinates time.
+But the user should experience:
+ONE NUTTY
+not seven separate assistants.
+________________________________________
+135. THE NUTTY CORE
+The central coordinator should understand:
+“Everything affects everything else.”
+Example:
+More work
+→ less available time
+→ less study time
+→ fitness conflict
+→ sleep risk
+→ next-day energy
+NUTTY should help the user understand these tradeoffs.
+________________________________________
+136. FUTURE PERSONAL OS COMMANDS
+Support natural commands such as:
+“NUTTY, plan tomorrow.”
+“NUTTY, I'm behind.”
+“NUTTY, fix my schedule.”
+“NUTTY, I have 20 minutes.”
+“NUTTY, what's important?”
+“NUTTY, what am I forgetting?”
+“NUTTY, help me reach my goals.”
+“NUTTY, why did you recommend that?”
+“NUTTY, show me my week.”
+“NUTTY, prepare me for tomorrow.”
+“NUTTY, I missed my workout.”
+“NUTTY, I have an exam.”
+“NUTTY, I need to save money.”
+“NUTTY, help me organize my life.”
+________________________________________
+137. THE ULTIMATE NUTTY EXPERIENCE
+The user should eventually feel like:
+“NUTTY understands what is going on in my life.”
+Not:
+“NUTTY has a bunch of features.”
+That distinction is extremely important.
+________________________________________
+138. FINAL PRODUCT DEFINITION
+NUTTY is:
+A personal AI operating system.
+It combines:
+Personal Model
++
+Memory
++
+Calendar
++
+Goals
++
+Tasks
++
+Planning
++
+Decision Intelligence
++
+Fitness
++
+School
++
+Work
++
+Money
++
+Life
++
+Learning
++
+Automation
++
+Integrations
++
+AI
+into one system.
+________________________________________
+139. FINAL UX PRINCIPLE
+Every screen should answer at least one of these questions:
+What matters?
+What should I do?
+Why should I do it?
+What changed?
+What am I forgetting?
+How am I progressing?
+What should happen next?
+If a screen does not help answer one of these questions, reconsider whether it belongs.
+________________________________________
+140. BUILD THIS LIKE A PLATFORM
+Do not think:
+“I am building 500 features.”
+Think:
+“I am building the infrastructure that allows NUTTY to intelligently manage hundreds of areas of a person's life.”
+The first version should be small enough to be reliable.
+The architecture should be powerful enough to become enormous.
+________________________________________
+FINAL COMMAND 
+Build NUTTY as a real, production-quality Personal AI Operating System.
+Do not create a fake futuristic demo.
+Do not hardcode a fictional user.
+Do not generate fake analytics.
+Do not assume information.
+Do not pretend integrations exist.
+Do not mark incomplete functionality as complete.
+Build the foundation correctly first.
+Then progressively expand NUTTY into the most capable personal operating system the architecture can support.
+The ultimate goal is:
+NUTTY should help a person understand their life, organize their life, plan their life, improve their life, and—when explicitly authorized—take useful actions on their behalf.
+The product should feel personal, intelligent, trustworthy, proactive, beautiful, fast, and genuinely useful.
+NUTTY
+Your Personal AI Operating System.
+

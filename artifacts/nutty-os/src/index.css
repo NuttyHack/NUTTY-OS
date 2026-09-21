@@ -1,0 +1,120 @@
+@layer theme, base, clerk, components, utilities;
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@clerk/themes/shadcn.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+  --radius-lg: var(--radius);
+}
+
+:root {
+  --background: 225 25% 6%;
+  --foreground: 215 32% 95%;
+  --border: 220 24% 18%;
+  --input: 220 24% 21%;
+  --ring: 214 92% 70%;
+  --card: 224 26% 10%;
+  --card-foreground: 215 32% 95%;
+  --primary: 214 92% 70%;
+  --primary-foreground: 224 30% 8%;
+  --secondary: 222 25% 15%;
+  --secondary-foreground: 215 32% 95%;
+  --muted: 222 22% 13%;
+  --muted-foreground: 218 16% 64%;
+  --accent: 286 78% 68%;
+  --accent-foreground: 224 30% 8%;
+  --destructive: 3 76% 66%;
+  --destructive-foreground: 215 32% 95%;
+  --sidebar: 226 30% 7%;
+  --sidebar-foreground: 215 32% 95%;
+  --app-font-sans: 'Manrope', sans-serif;
+  --app-font-mono: 'DM Mono', monospace;
+  --radius: 1rem;
+  --shadow-md: 0 18px 45px rgba(0, 0, 0, .22);
+}
+
+.dark {
+  --background: 225 20% 7%;
+  --foreground: 38 26% 92%;
+  --border: 222 14% 19%;
+  --input: 222 14% 22%;
+  --ring: 74 78% 58%;
+  --card: 225 18% 10%;
+  --card-foreground: 38 26% 92%;
+  --primary: 74 78% 58%;
+  --primary-foreground: 224 24% 9%;
+  --secondary: 222 15% 15%;
+  --secondary-foreground: 38 26% 92%;
+  --muted: 222 14% 13%;
+  --muted-foreground: 222 9% 61%;
+  --accent: 17 67% 60%;
+  --accent-foreground: 225 20% 7%;
+  --destructive: 3 72% 63%;
+  --destructive-foreground: 38 26% 92%;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; background: hsl(var(--background)); }
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 84% -8%, rgba(51, 116, 255, .12), transparent 30rem),
+    radial-gradient(circle at -12% 64%, rgba(183, 52, 255, .07), transparent 28rem),
+    hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--app-font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+@keyframes pulse-ring { 0%,100% { opacity: .5; transform: scale(.98); } 50% { opacity: 1; transform: scale(1.02); } }
+.animate-rise { animation: rise .55s cubic-bezier(.2,.8,.2,1) both; }
+.stagger-1 { animation-delay: .06s; }
+.stagger-2 { animation-delay: .12s; }
+.stagger-3 { animation-delay: .18s; }
+.stagger-4 { animation-delay: .24s; }
+.skeleton {
+  position: relative; overflow: hidden; background: hsl(var(--secondary));
+  border-radius: .5rem; color: transparent !important;
+}
+.skeleton::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.055), transparent);
+  animation: sweep 1.4s infinite;
+}
+.mono { font-family: var(--app-font-mono); }
+.display { font-family: 'Space Grotesk', sans-serif; }
+.eyebrow { color: hsl(var(--muted-foreground)); font-size: .67rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.surface { background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.018)); border: 1px solid hsl(var(--border)); box-shadow: var(--shadow-md); }
+.surface-flat { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); }
+.soft-grid { background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px); background-size: 30px 30px; }
+.text-gradient { background: linear-gradient(100deg, #78b5ff 10%, #c879ff 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.cl-formFieldInput::placeholder { color: #8b9ab0; opacity: 1; }
+::selection { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }

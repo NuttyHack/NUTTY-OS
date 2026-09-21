@@ -1,0 +1,359 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: dashboard
+    description: Personal command center
+  - name: workouts
+    description: Training sessions and set logging
+  - name: nutrition
+    description: Nutrition and food budget
+  - name: profile
+    description: Personal profile
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get the current command center
+      responses:
+        "200":
+          description: Current dashboard state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dashboard"
+  /workouts/today:
+    get:
+      operationId: getTodayWorkout
+      tags: [workouts]
+      summary: Get today's adaptive workout
+      responses:
+        "200":
+          description: Today's workout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workout"
+  /workouts/{workoutId}/sets:
+    post:
+      operationId: logWorkoutSet
+      tags: [workouts]
+      summary: Log a completed set
+      parameters:
+        - name: workoutId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkoutSetInput"
+      responses:
+        "200":
+          description: Logged set with coaching cue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetLogResult"
+  /nutrition/today:
+    get:
+      operationId: getTodayNutrition
+      tags: [nutrition]
+      summary: Get today's nutrition snapshot
+      responses:
+        "200":
+          description: Today's nutrition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NutritionSnapshot"
+  /progress:
+    get:
+      operationId: getProgress
+      tags: [dashboard]
+      summary: Get progress trends and missions
+      responses:
+        "200":
+          description: Personal progress
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Progress"
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get personal profile
+      responses:
+        "200":
+          description: Personal profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update personal profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    Dashboard:
+      type: object
+      required: [greeting, dateLabel, readiness, objective, workout, nutrition, steps, hydration, budget, habits, insight]
+      properties:
+        greeting: { type: string }
+        dateLabel: { type: string }
+        readiness:
+          $ref: "#/components/schemas/Readiness"
+        objective:
+          type: object
+          required: [title, detail]
+          properties:
+            title: { type: string }
+            detail: { type: string }
+        workout:
+          $ref: "#/components/schemas/WorkoutSummary"
+        nutrition:
+          $ref: "#/components/schemas/NutritionSummary"
+        steps:
+          type: object
+          required: [current, target]
+          properties:
+            current: { type: integer }
+            target: { type: integer }
+        hydration:
+          type: object
+          required: [current, target]
+          properties:
+            current: { type: number }
+            target: { type: number }
+        budget:
+          type: object
+          required: [spent, total, currency]
+          properties:
+            spent: { type: number }
+            total: { type: number }
+            currency: { type: string }
+        habits:
+          type: array
+          items:
+            $ref: "#/components/schemas/Habit"
+        insight:
+          type: object
+          required: [title, body, source]
+          properties:
+            title: { type: string }
+            body: { type: string }
+            source: { type: string }
+    Readiness:
+      type: object
+      required: [score, label, note]
+      properties:
+        score: { type: integer }
+        label: { type: string }
+        note: { type: string }
+    WorkoutSummary:
+      type: object
+      required: [title, durationMinutes, completedExercises, totalExercises, status]
+      properties:
+        title: { type: string }
+        durationMinutes: { type: integer }
+        completedExercises: { type: integer }
+        totalExercises: { type: integer }
+        status: { type: string }
+    NutritionSummary:
+      type: object
+      required: [calories, calorieTarget, protein, proteinTarget]
+      properties:
+        calories: { type: integer }
+        calorieTarget: { type: integer }
+        protein: { type: integer }
+        proteinTarget: { type: integer }
+    Habit:
+      type: object
+      required: [id, label, completed]
+      properties:
+        id: { type: string }
+        label: { type: string }
+        completed: { type: boolean }
+    Workout:
+      type: object
+      required: [id, title, focus, durationMinutes, exercises]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        focus: { type: string }
+        durationMinutes: { type: integer }
+        exercises:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exercise"
+    Exercise:
+      type: object
+      required: [id, name, order, targetWeight, targetSets, repRange, rir, restSeconds, previous, cue, completedSets]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        order: { type: integer }
+        targetWeight: { type: number }
+        targetSets: { type: integer }
+        repRange: { type: string }
+        rir: { type: integer }
+        restSeconds: { type: integer }
+        previous: { type: string }
+        cue: { type: string }
+        completedSets: { type: integer }
+    WorkoutSetInput:
+      type: object
+      required: [exerciseId, weight, reps, rir]
+      properties:
+        exerciseId: { type: string }
+        weight: { type: number }
+        reps: { type: integer }
+        rir: { type: integer }
+    SetLogResult:
+      type: object
+      required: [exerciseId, completedSets, message, nextAction]
+      properties:
+        exerciseId: { type: string }
+        completedSets: { type: integer }
+        message: { type: string }
+        nextAction: { type: string }
+    NutritionSnapshot:
+      type: object
+      required: [calories, calorieTarget, protein, proteinTarget, carbs, fat, meals, budget]
+      properties:
+        calories: { type: integer }
+        calorieTarget: { type: integer }
+        protein: { type: integer }
+        proteinTarget: { type: integer }
+        carbs: { type: integer }
+        fat: { type: integer }
+        meals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Meal"
+        budget:
+          $ref: "#/components/schemas/Budget"
+    Meal:
+      type: object
+      required: [id, type, name, calories, protein, status]
+      properties:
+        id: { type: string }
+        type: { type: string }
+        name: { type: string }
+        calories: { type: integer }
+        protein: { type: integer }
+        status: { type: string }
+    Budget:
+      type: object
+      required: [spent, total, remaining, currency]
+      properties:
+        spent: { type: number }
+        total: { type: number }
+        remaining: { type: number }
+        currency: { type: string }
+    Progress:
+      type: object
+      required: [weight, weightChange, consistency, streak, strength, missions]
+      properties:
+        weight: { type: number }
+        weightChange: { type: number }
+        consistency: { type: integer }
+        streak: { type: integer }
+        strength:
+          type: array
+          items:
+            $ref: "#/components/schemas/StrengthPoint"
+        missions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Mission"
+    StrengthPoint:
+      type: object
+      required: [label, value, change]
+      properties:
+        label: { type: string }
+        value: { type: number }
+        change: { type: number }
+    Mission:
+      type: object
+      required: [id, title, current, target, unit]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        current: { type: number }
+        target: { type: number }
+        unit: { type: string }
+    Profile:
+      type: object
+      required: [id, name, goal, targetWeight, targetDate, trainingDays, experience, equipment]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        goal: { type: string }
+        targetWeight: { type: number }
+        targetDate: { type: string }
+        trainingDays: { type: integer }
+        experience: { type: string }
+        equipment:
+          type: array
+          items: { type: string }
+    ProfileUpdate:
+      type: object
+      properties:
+        name: { type: string, minLength: 1 }
+        goal: { type: string }
+        targetWeight: { type: number }
+        targetDate: { type: string }
+        trainingDays: { type: integer }
+        experience: { type: string }
+        equipment:
+          type: array
+          items: { type: string }
+

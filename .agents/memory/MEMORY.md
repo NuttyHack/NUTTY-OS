@@ -1,0 +1,2 @@
+- [NUTTY blank-slate principle](nutty-blank-slate.md) — personal data must be earned; demo payloads stay opt-in and never appear by default.
+- [NUTTY authentication boundary](nutty-auth.md) — Clerk owns browser auth while server personal routes require an authenticated user.

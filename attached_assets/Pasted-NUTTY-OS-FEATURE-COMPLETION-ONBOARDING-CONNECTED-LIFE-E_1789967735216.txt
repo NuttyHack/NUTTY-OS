@@ -1,0 +1,868 @@
+NUTTY OS — FEATURE COMPLETION, ONBOARDING & CONNECTED LIFE EXPANSION
+IMPORTANT
+Do NOT rebuild the existing NUTTY application.
+Do NOT replace the current foundation.
+Do NOT redesign the entire product from scratch.
+The existing NUTTY OS foundation is working and should remain intact.
+This phase is an ADDITIVE PRODUCT COMPLETION PASS.
+The goal is to take the current foundation and turn the existing screens, modules and navigation into a connected, usable Personal AI Operating System.
+The current application has many areas showing:
+•	Coming Soon
+•	No memory stored
+•	No data
+•	Not connected
+•	Empty states
+•	Placeholder functionality
+Replace those dead-end states with functional product experiences.
+Where real APIs or integrations are not yet available, create clean provider abstractions and realistic demo/simulation providers.
+NEVER put fake data directly into UI components.
+Use:
+Mock Provider → Provider Interface → NUTTY Data Layer → UI
+so that the mock provider can later be replaced with a real provider without rebuilding the application.
+________________________________________
+1. CORE PRODUCT PRINCIPLE
+NUTTY must become a CONNECTED PERSONAL AI OPERATING SYSTEM.
+The modules must no longer feel like isolated pages.
+The architecture should support:
+Calendar
++
+Email
++
+Tasks
++
+Goals
++
+Fitness
++
+Health
++
+School
++
+Work
++
+Money
++
+Subscriptions
++
+Travel
++
+Social
++
+Notifications
++
+Voice
++
+Memory
++
+Knowledge
+↓
+NUTTY CORE
+↓
+PERSONAL LIFE MODEL
+↓
+CONTEXT ENGINE
+↓
+DECISION ENGINE
+↓
+PLANNING ENGINE
+↓
+ACTION / RECOMMENDATION ENGINE
+↓
+"What should I do?"
+________________________________________
+2. PROGRESSIVE USER ONBOARDING
+Create a real onboarding experience for new users.
+Do NOT require every piece of information at once.
+Allow progressive setup.
+Step 1 — Personal Profile
+Collect:
+•	Name
+•	Age
+•	Location
+•	Timezone
+•	Student / employed / both / other
+•	Occupation or field
+•	Typical wake time
+•	Typical sleep time
+Step 2 — Goals
+Allow the user to configure:
+•	Fitness goals
+•	Health goals
+•	School goals
+•	Work goals
+•	Career goals
+•	Financial goals
+•	Personal goals
+•	Projects
+Step 3 — Schedule
+Allow:
+•	Classes
+•	Work
+•	Training
+•	Recurring events
+•	Appointments
+•	Important commitments
+•	Free-time preferences
+Step 4 — Routines
+Allow:
+•	Morning routine
+•	Evening routine
+•	Training routine
+•	Study routine
+•	Work routine
+•	Meal routine
+•	Sleep routine
+Step 5 — Connections
+Let the user connect/configure:
+•	Calendar
+•	Email
+•	Health
+•	Finance
+•	Travel
+•	Notifications
+•	Voice
+•	LinkedIn
+•	Instagram
+•	WhatsApp
+Every connection must support:
+•	Connect
+•	Configure
+•	Test
+•	Active state
+•	Disconnect
+•	Permission information
+•	Demo mode where applicable
+Allow users to skip any integration and configure it later.
+________________________________________
+3. SETUP STATUS CENTER
+Create a centralized NUTTY setup status component.
+Show:
+•	Profile
+•	Goals
+•	Calendar
+•	Email
+•	Health
+•	Finance
+•	Travel
+•	Social
+•	Voice
+•	Notifications
+Each item should have:
+•	Configured
+•	Not configured
+•	Connected
+•	Not connected
+•	Needs attention
+Never claim an integration is connected unless it actually is.
+Show a clear CTA:
+"Connect"
+"Configure"
+"Finish setup"
+________________________________________
+4. REMOVE DEAD-END "COMING SOON" STATES
+Search the entire application for:
+•	Coming Soon
+•	No memory stored
+•	Empty placeholder states
+•	Placeholder buttons
+•	Disabled feature cards
+•	Fake unavailable modules
+Replace them with usable product surfaces.
+Every module should provide at minimum:
+1.	Overview
+2.	Setup/configuration
+3.	Demo/simulation where real provider unavailable
+4.	Empty state with useful CTA
+5.	Data model
+6.	Actions
+7.	NUTTY contextual explanation
+________________________________________
+5. CALENDAR OS
+Create a functional calendar module.
+Support:
+•	Day
+•	3-day
+•	Week
+•	Month
+•	Agenda
+Events should include:
+•	Title
+•	Start/end
+•	Category
+•	Location
+•	Notes
+•	Recurrence
+•	Priority
+•	Flexible/hard commitment
+Support:
+•	Google Calendar provider interface
+•	Outlook provider interface
+•	Mock Calendar provider
+Add:
+•	Conflict detection
+•	Free-time detection
+•	Travel/buffer time
+•	Schedule density
+•	Rescheduling
+•	Flexible events
+•	Calendar-aware task planning
+Example:
+If:
+Work = 08:00–16:00
+Class = 17:00–18:00
+Workout = 18:30
+NUTTY should understand the relationship between these events.
+________________________________________
+6. EMAIL OS
+Create an Email module.
+Provider abstraction:
+EmailProvider
+Implement:
+•	MockEmailProvider
+•	Future GmailProvider
+•	Future OutlookProvider
+Support:
+•	Inbox
+•	Important
+•	Unread
+•	Needs reply
+•	Deadlines
+•	Appointments
+•	Receipts
+•	Bills
+•	Subscriptions
+•	Notifications
+Create AI categorization structures:
+•	Requires action
+•	Informational
+•	Financial
+•	School
+•	Work
+•	Personal
+•	Marketing
+•	Urgent
+Never invent email content.
+________________________________________
+7. BILLS & SUBSCRIPTIONS
+Create a dedicated module.
+Track:
+•	Provider
+•	Name
+•	Amount
+•	Currency
+•	Frequency
+•	Next payment
+•	Category
+•	Status
+•	Renewal date
+Support:
+•	Manual entry
+•	Mock financial/email provider
+•	Future real financial integrations
+Add views:
+•	Due soon
+•	Monthly total
+•	Annual total
+•	Upcoming renewals
+•	Recurring payments
+NUTTY should be able to answer:
+"What do I need to pay this week?"
+"What subscriptions are coming up?"
+"How much are my recurring monthly expenses?"
+________________________________________
+8. MONEY OS
+Expand Money beyond a placeholder page.
+Include:
+•	Income
+•	Expenses
+•	Budget
+•	Savings goals
+•	Bills
+•	Subscriptions
+•	Purchases
+•	Categories
+•	Financial goals
+Add:
+•	Monthly overview
+•	Spending timeline
+•	Budget progress
+•	Upcoming payments
+•	Goal progress
+Real financial data must only come from authorized sources or user input.
+________________________________________
+9. SOCIAL OS
+Add a Social module.
+Initial providers:
+•	LinkedIn
+•	Instagram
+•	WhatsApp
+Create provider interfaces:
+SocialProvider
+LinkedInProvider
+InstagramProvider
+WhatsAppProvider
+MockSocialProvider
+Support data concepts:
+•	Notifications
+•	Messages
+•	Mentions
+•	Activity
+•	Important conversations
+•	Connection requests
+•	Unread items
+•	Trends
+•	Engagement signals
+Do NOT claim access to a real social account without authorization.
+Where real API access is unavailable, use clearly labeled Demo Social Data.
+________________________________________
+10. SOCIAL DIGEST
+Create a NUTTY Social Digest.
+Example:
+SOCIAL DIGEST
+LinkedIn:
+•	4 relevant updates
+•	2 connection requests
+Instagram:
+•	5 notifications
+WhatsApp:
+•	3 conversations requiring attention
+Then allow:
+"Summarize my socials."
+"What's important?"
+"Do I need to reply to anyone?"
+"What's trending?"
+"Show me professional trends."
+The actual answer must be generated from available connected/demo data.
+________________________________________
+11. NEWS / INFORMATION DIGEST
+Create a News & Trends layer.
+It should support:
+•	General news
+•	Technology
+•	Business
+•	Sports
+•	User-selected interests
+•	Professional trends
+•	Local information where supported
+Separate:
+NEWS
+SOCIAL TRENDS
+PERSONAL NOTIFICATIONS
+Do not mix them together.
+The architecture should support future real search/news providers.
+________________________________________
+12. MEMORY OS
+Turn Memory into a real structured system.
+Memory categories:
+•	Identity
+•	Preferences
+•	Goals
+•	Routines
+•	Important facts
+•	Fitness
+•	Food
+•	School
+•	Work
+•	Finance
+•	Planning
+•	Communication
+•	Personal rules
+Each memory should store:
+•	Value
+•	Source
+•	Timestamp
+•	Confidence
+•	User confirmed
+•	Editable
+•	Deletable
+Do not invent memories.
+If NUTTY does not know something:
+Ask.
+Example:
+"I don't know your normal training time yet. Would you like to tell me?"
+________________________________________
+13. PERSONAL LIFE MODEL
+Create a unified data layer representing:
+USER
+PROFILE
+GOALS
+TASKS
+PROJECTS
+CALENDAR
+WORK
+SCHOOL
+FITNESS
+HEALTH
+MONEY
+SUBSCRIPTIONS
+TRAVEL
+SOCIAL
+EMAIL
+ROUTINES
+MEMORY
+PREFERENCES
+NUTTY modules must read from this shared model rather than behaving like unrelated applications.
+________________________________________
+14. NUTTY CONTEXT ENGINE
+Create a context aggregation layer.
+Given a user request, gather relevant context.
+Example:
+User:
+"How should I train today?"
+Context could include:
+•	Current date/time
+•	Calendar
+•	Work
+•	School
+•	Sleep
+•	Recent workouts
+•	Training plan
+•	Goals
+•	Recovery
+•	Available time
+Another example:
+"What should I do right now?"
+Context:
+•	Current time
+•	Calendar
+•	Tasks
+•	Deadlines
+•	Goals
+•	Work
+•	School
+•	Fitness
+•	Energy/readiness if available
+•	Notifications
+Never use unavailable information as though it were known.
+________________________________________
+15. NUTTY DECISION ENGINE
+Create a structured decision engine.
+Input:
+Context + user request
+Output:
+•	Recommendation
+•	Reason
+•	Relevant data
+•	Alternatives
+•	Confidence/status
+•	Required user approval
+•	Suggested action
+Example:
+"What should I do right now?"
+NUTTY might identify:
+1.	Assignment due tomorrow
+2.	Important email awaiting reply
+3.	Workout scheduled tonight
+Then produce a contextual plan.
+This is not a prediction engine.
+It is a contextual planning/recommendation system.
+________________________________________
+16. "WHAT SHOULD I DO?" COMMAND
+Make this one of the primary NUTTY experiences.
+User can ask:
+"What should I do?"
+"What should I do right now?"
+"What should I focus on?"
+"What matters today?"
+"I'm overwhelmed."
+"Plan my day."
+"Plan my week."
+NUTTY should use available personal context.
+________________________________________
+17. VOICE OS
+Create a first-class Voice interface.
+UI should include:
+•	Microphone activation
+•	Listening state
+•	Processing state
+•	Speaking state
+•	Transcript
+•	Response
+•	Conversation history
+•	Voice settings
+Create:
+VoiceProvider
+Implement:
+MockVoiceProvider
+with architecture ready for future real speech-to-text and text-to-speech providers.
+Support conversational commands such as:
+"Hey NUTTY, check my socials."
+"Hey NUTTY, what do I have today?"
+"Hey NUTTY, what should I train today?"
+"Hey NUTTY, I slept 5 hours. How should I plan today?"
+"Hey NUTTY, what do I need to pay this week?"
+"Hey NUTTY, plan my afternoon."
+"Hey NUTTY, remind me about this tomorrow."
+The mock environment should demonstrate the complete interaction flow.
+________________________________________
+18. NUTTY VOICE INTENT SYSTEM
+Create structured intents such as:
+CHECK_SOCIALS
+DAILY_BRIEFING
+CHECK_CALENDAR
+CHECK_EMAIL
+CHECK_BILLS
+PLAN_DAY
+PLAN_WEEK
+FITNESS_RECOMMENDATION
+CHECK_TASKS
+CREATE_TASK
+CREATE_REMINDER
+SUMMARIZE_NOTIFICATIONS
+CHECK_GOALS
+CHECK_MEMORY
+OPEN_MODULE
+Natural language should map to these intents.
+Example:
+"Hey NUTTY, what should I do today?"
+→ DAILY_BRIEFING / PLAN_DAY
+"Hey NUTTY, check my socials."
+→ CHECK_SOCIALS
+"Hey NUTTY, what do I need to pay?"
+→ CHECK_BILLS
+________________________________________
+19. NOTIFICATION OS
+Build a real notification center.
+Categories:
+•	Urgent
+•	Action required
+•	Reminder
+•	Calendar
+•	Fitness
+•	School
+•	Work
+•	Finance
+•	Social
+•	NUTTY recommendation
+•	News
+Support:
+•	Read/unread
+•	Priority
+•	Snooze
+•	Dismiss
+•	Open related module
+•	Notification preferences
+Add:
+"Why am I seeing this?"
+so NUTTY can explain the source.
+________________________________________
+20. MORNING BRIEFING
+Create a real NUTTY Morning Briefing.
+Example structure:
+GOOD MORNING
+Today
+•	Calendar
+•	Important tasks
+•	Deadlines
+•	Work
+•	School
+•	Fitness
+•	Weather if connected
+•	Notifications
+•	Social digest
+•	Financial reminders
+Then:
+NUTTY'S PLAN
+1.	Highest priority
+2.	Second priority
+3.	Fitness
+4.	Admin
+5.	Evening preparation
+Everything must be derived from available data.
+________________________________________
+21. EVENING REVIEW
+Create:
+End-of-Day Review
+Show:
+•	Completed tasks
+•	Missed tasks
+•	Calendar
+•	Workout
+•	Study
+•	Work
+•	Goal progress
+•	Notifications
+•	Tomorrow preview
+Ask:
+"What changed today?"
+"What should move to tomorrow?"
+"Anything you want me to remember?"
+________________________________________
+22. FITNESS OS CONNECTION
+Fitness must read from the broader NUTTY context.
+Example:
+User:
+"I slept 5h40m, worked 08:00–16:00 and have one hour tonight. What should I train?"
+NUTTY should consider:
+•	Sleep
+•	Calendar
+•	Work
+•	Training history
+•	Training plan
+•	Recovery
+•	Available time
+•	Goals
+The current fitness system must remain intact but become context-aware.
+________________________________________
+23. CROSS-MODULE DEMO SCENARIO
+Create a complete demonstration showing NUTTY operating across modules.
+Demo user has:
+•	Work
+•	Class
+•	Calendar
+•	Fitness plan
+•	Tasks
+•	Email
+•	Social
+•	Bills
+•	Goals
+•	Sleep data
+Then demonstrate:
+User:
+"Hey NUTTY, what should I do today?"
+NUTTY gathers:
+Calendar
++
+Tasks
++
+Work
++
+School
++
+Fitness
++
+Email
++
+Bills
++
+Social
+and generates a unified daily briefing.
+Clearly label this as DEMO DATA if it is not real user data.
+________________________________________
+24. EMPTY STATE DESIGN
+For real new users, empty states should be useful.
+Instead of:
+"No memory stored."
+Show:
+Your Memory
+NUTTY hasn't learned anything about you yet.
+You can:
+[Tell NUTTY about yourself]
+[Complete setup]
+[Import connected data]
+[Skip for now]
+Same approach for:
+Fitness
+Work
+Money
+Life
+School
+Travel
+Social
+Email
+Calendar
+Never show fake personal data.
+________________________________________
+25. DEMO MODE
+Create:
+NUTTY_DEMO_MODE=true
+Demo mode can populate:
+•	Calendar
+•	Tasks
+•	Email
+•	Social
+•	Fitness
+•	Money
+•	Notifications
+•	Memory
+•	Work
+•	School
+Every demo screen must visibly indicate:
+DEMO DATA
+Real-user mode must contain no fictional personal data.
+________________________________________
+26. PROVIDER ARCHITECTURE
+Create clean interfaces for future real integrations.
+Examples:
+AIProvider
+CalendarProvider
+EmailProvider
+HealthProvider
+FinanceProvider
+TravelProvider
+SocialProvider
+VoiceProvider
+NotificationProvider
+SearchProvider
+MemoryProvider
+Each should support:
+MockProvider
+and eventually:
+RealProvider
+Do not put provider-specific logic inside UI components.
+________________________________________
+27. ACTION CENTER
+Create a centralized Action Center.
+Actions may include:
+•	Create task
+•	Move calendar event
+•	Create reminder
+•	Save memory
+•	Log workout
+•	Add expense
+•	Create goal
+•	Send message in future supported integrations
+•	Mark notification handled
+Every action should show:
+•	What NUTTY wants to do
+•	Why
+•	Source
+•	User approval required?
+•	Confirm
+•	Cancel
+•	Undo where possible
+________________________________________
+28. AUTONOMY LEVELS
+Add settings:
+MANUAL
+NUTTY recommends only.
+ASSISTED
+NUTTY prepares actions for approval.
+PROACTIVE
+NUTTY can perform low-risk actions within configured permissions.
+AUTOMATED
+NUTTY can perform explicitly authorized recurring workflows.
+Never allow unrestricted autonomous access.
+________________________________________
+29. PRIVACY
+For every integration show:
+•	What data is accessed
+•	Why it is accessed
+•	What NUTTY can do
+•	What NUTTY cannot do
+•	Connected status
+•	Disconnect option
+Never imply access that doesn't exist.
+________________________________________
+30. SEARCH THE EXISTING CODEBASE BEFORE IMPLEMENTING
+Before creating new pages:
+1.	Identify existing modules.
+2.	Identify existing routes.
+3.	Identify existing components.
+4.	Identify existing APIs.
+5.	Identify existing database models.
+6.	Identify existing mock/demo logic.
+7.	Identify existing authentication.
+8.	Identify existing NUTTY AI interfaces.
+Reuse existing components and patterns wherever possible.
+Do not duplicate existing systems.
+________________________________________
+31. DATABASE / DATA MODEL
+Add persistent entities where appropriate:
+UserProfile
+Goal
+Task
+Project
+CalendarEvent
+Routine
+Memory
+Workout
+WorkoutSession
+HealthMetric
+Meal
+FoodItem
+Expense
+Income
+Bill
+Subscription
+EmailItem
+SocialItem
+Notification
+SchoolClass
+Assignment
+WorkProject
+TravelTrip
+Integration
+IntegrationPermission
+UserPreference
+Automation
+Action
+ActionHistory
+Use authenticated user IDs for all personal data.
+Never use a global fictional user.
+________________________________________
+32. QUALITY BAR
+The final application should feel like:
+"One Personal AI Operating System"
+not:
+"Several disconnected dashboards."
+The user should be able to move naturally between:
+Today
+Goals
+Tasks
+Calendar
+Fitness
+School
+Work
+Money
+Life
+Memory
+Social
+Email
+Travel
+Notifications
+Voice
+Settings
+while NUTTY retains context.
+________________________________________
+33. FINAL ACCEPTANCE TEST
+Test a brand-new user.
+They should:
+1.	Sign up.
+2.	Enter their name.
+3.	Configure basic profile.
+4.	Add one goal.
+5.	Add one schedule item.
+6.	Add one task.
+7.	Enter one preference.
+8.	Open Memory.
+9.	Open Fitness.
+10.	Open Work.
+11.	Open Money.
+12.	Open Life.
+13.	Open Calendar.
+14.	Open Email.
+15.	Open Social.
+16.	Open Voice.
+17.	Open Notifications.
+There should be NO unexplained dead-end "Coming Soon" screens.
+Every unavailable real integration should instead provide:
+•	Explanation
+•	Connect option
+•	Demo option where appropriate
+•	Configuration state
+•	Permission information
+________________________________________
+34. MOST IMPORTANT FINAL REQUIREMENT
+Do not optimize for having hundreds of buttons.
+Optimize for CONNECTION.
+NUTTY should increasingly understand:
+"What is happening in this person's life?"
+and then answer:
+"What should happen next?"
+The existing application is the foundation.
+Do not throw it away.
+Expand it.
+Connect it.
+Populate the product surface.
+Make every major module usable.
+Make onboarding real.
+Make integrations understandable.
+Make voice functional through a provider abstraction.
+Make Memory meaningful.
+Make cross-module context work.
+Make "What should I do?" actually use the user's available context.
+The long-term real AI brain will be implemented later in the user's own environment.
+
+END
+
