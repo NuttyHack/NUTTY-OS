@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
-import { Mic, MicOff, Volume2, Sparkles } from "lucide-react";
+import { Volume2, Sparkles, Mic } from "lucide-react";
 import { NuttyData, respondToIntent, VoiceTurn, makeId } from "../lib/nutty-data";
 
 interface JarvisVoiceProps {
@@ -21,191 +21,202 @@ const INTENT_ROUTES: Record<string, string> = {
   DAILY_BRIEFING: "/today",
 };
 
+// Wake words regex catching variations (Nutty, Nati, Nazi)
+const WAKE_WORD_REGEX = /^(hey\s+)?(nutty|nati|nazi|jarvis)[,\s]*/i;
+
 export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [lastReply, setLastReply] = useState("");
+  const [lastReply, setLastReply] = useState("Nutty Voice Daemon active. Listening for 'Hey Nutty'...");
+  const [isInitialized, setIsInitialized] = useState(false);
   const [, setLocation] = useLocation();
 
   const recognitionRef = useRef<any>(null);
-  const shouldListenRef = useRef(false);
   const isSpeakingRef = useRef(false);
+  const dataRef = useRef(data);
 
-  // Synchronize state with refs for async event callbacks
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
+
   useEffect(() => {
     isSpeakingRef.current = isSpeaking;
   }, [isSpeaking]);
 
+  // --- Voice Daemon Core Loop ---
   useEffect(() => {
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      console.warn("Speech recognition is not supported in this browser.");
+      console.warn("Web Speech API not supported in this browser.");
       return;
     }
 
     const recognition = new SpeechRecognition();
-    recognition.continuous = false; // We manage turn-taking explicitly
+    recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = "en-US";
 
+    recognition.onstart = () => {
+      setIsListening(true);
+      setIsInitialized(true);
+    };
+
     recognition.onresult = (event: any) => {
+      // Ignore recognized speech while Nutty is currently talking out loud
+      if (isSpeakingRef.current) return;
+
       const current = event.resultIndex;
-      const text = event.results[current][0].transcript;
-      setTranscript(text);
+      const rawText = event.results[current][0].transcript.trim();
+      setTranscript(rawText);
 
       if (event.results[current].isFinal) {
-        handleSpokenCommand(text);
+        processVoiceInput(rawText);
       }
     };
 
     recognition.onend = () => {
       setIsListening(false);
-      // Auto-restart recognition if continuous mode is active and Nati is NOT currently speaking
-      if (shouldListenRef.current && !isSpeakingRef.current) {
-        try {
-          recognition.start();
-          setIsListening(true);
-        } catch (e) {
-          console.debug("Recognition start retry deferred:", e);
-        }
+      // INFINITE LOOP: Immediately restart recognition unless Nutty is actively speaking
+      if (!isSpeakingRef.current) {
+        restartListeningSilently();
       }
     };
 
     recognition.onerror = (event: any) => {
-      if (event.error !== "no-speech") {
-        console.error("Speech recognition error:", event.error);
+      if (event.error !== "no-speech" && event.error !== "aborted") {
+        console.debug("Voice recognition notice:", event.error);
       }
       setIsListening(false);
+      if (!isSpeakingRef.current) {
+        setTimeout(restartListeningSilently, 300);
+      }
     };
 
     recognitionRef.current = recognition;
 
-    return () => {
-      shouldListenRef.current = false;
-      if (recognitionRef.current) recognitionRef.current.stop();
-    };
-  }, [data]);
+    // Auto-start listening on mount
+    try {
+      recognition.start();
+    } catch (e) {
+      // If browser blocks auto-mic on cold load, register one-time document click handler
+      const unlockMic = () => {
+        try {
+          recognition.start();
+        } catch {}
+        document.removeEventListener("click", unlockMic);
+      };
+      document.addEventListener("click", unlockMic);
+    }
 
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.onend = null;
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
+
+  const restartListeningSilently = () => {
+    if (!recognitionRef.current || isSpeakingRef.current) return;
+    try {
+      recognitionRef.current.start();
+    } catch (e) {
+      // Already running or initializing
+    }
+  };
+
+  // --- JARVIS Voice Engine ---
   const speakText = (text: string) => {
     if (!("speechSynthesis" in window)) return;
 
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
+    utterance.rate = 1.05;
     utterance.pitch = 1.0;
 
     utterance.onstart = () => {
       setIsSpeaking(true);
       isSpeakingRef.current = true;
-      // Stop mic while Nati speaks so she doesn't hear herself
+      // Pause mic while speaking to avoid hearing itself
       if (recognitionRef.current) {
         try { recognitionRef.current.stop(); } catch {}
       }
     };
 
-    utterance.onend = () => {
+    const handleSpeechComplete = () => {
       setIsSpeaking(false);
       isSpeakingRef.current = false;
-
-      // CONTINUOUS CONVERSATION HANDOFF:
-      // Auto-resume listening immediately when Nati finishes talking
-      if (shouldListenRef.current && recognitionRef.current) {
-        setTranscript("");
-        try {
-          recognitionRef.current.start();
-          setIsListening(true);
-        } catch (e) {
-          console.debug("Failed to restart recognition after speech:", e);
-        }
-      }
+      setTranscript("");
+      // RE-OPEN MIC IMMEDIATELY AFTER SPEAKING
+      setTimeout(restartListeningSilently, 200);
     };
 
-    utterance.onerror = () => {
-      setIsSpeaking(false);
-      isSpeakingRef.current = false;
-    };
+    utterance.onend = handleSpeechComplete;
+    utterance.onerror = handleSpeechComplete;
 
     window.speechSynthesis.speak(utterance);
   };
 
-  const handleSpokenCommand = (rawCommand: string) => {
-    if (!rawCommand.trim()) return;
+  const processVoiceInput = (rawText: string) => {
+    if (!rawText) return;
 
-    // Wake-word cleanup ("Hey Nati", "Nati")
-    const cleanCommand = rawCommand
-      .replace(/^(hey nati|nati|hey nutty|nutty)[,\s]*/i, "")
-      .trim();
+    const hasWakeWord = WAKE_WORD_REGEX.test(rawText);
+    const cleanCommand = rawText.replace(WAKE_WORD_REGEX, "").trim();
 
-    const queryToProcess = cleanCommand.length > 0 ? cleanCommand : rawCommand;
-
-    const result = respondToIntent(queryToProcess, data);
-    const responseText = typeof result === "string" ? result : result.text;
-    const intent = typeof result === "object" ? result.intent : null;
-
-    if (intent && INTENT_ROUTES[intent]) {
-      setLocation(INTENT_ROUTES[intent]);
-    }
-
-    setLastReply(responseText);
-    speakText(responseText);
-
-    const turn: VoiceTurn = {
-      id: makeId("voice"),
-      timestamp: new Date().toISOString(),
-      prompt: rawCommand,
-      response: responseText,
-    };
-
-    onUpdateData((prev) => ({
-      ...prev,
-      voiceTurns: [turn, ...((prev as any).voiceTurns || [])],
-    }));
-  };
-
-  const toggleListening = () => {
-    if (!recognitionRef.current) {
-      alert("Speech Recognition is not supported in your browser. Please use Chrome, Edge, or Safari.");
+    // If user said "Hey Nutty" with no extra command
+    if (hasWakeWord && !cleanCommand) {
+      const jarvisGreeting = "At your service, sir. How can I help you today?";
+      setLastReply(jarvisGreeting);
+      speakText(jarvisGreeting);
       return;
     }
 
-    if (shouldListenRef.current) {
-      // Stop hands-free session
-      shouldListenRef.current = false;
-      window.speechSynthesis.cancel();
-      recognitionRef.current.stop();
-      setIsListening(false);
-    } else {
-      // Start hands-free continuous session
-      shouldListenRef.current = true;
-      window.speechSynthesis.cancel();
-      setTranscript("");
-      try {
-        recognitionRef.current.start();
-        setIsListening(true);
-      } catch (e) {
-        console.error("Failed to start speech recognition:", e);
+    // Process command if wake-word was present OR if Nutty was already in conversation
+    if (hasWakeWord || cleanCommand.length > 3) {
+      const query = cleanCommand || rawText;
+      const result = respondToIntent(query, dataRef.current);
+      const responseText = typeof result === "string" ? result : result.text;
+      const intent = typeof result === "object" ? result.intent : null;
+
+      if (intent && INTENT_ROUTES[intent]) {
+        setLocation(INTENT_ROUTES[intent]);
       }
+
+      setLastReply(responseText);
+      speakText(responseText);
+
+      const turn: VoiceTurn = {
+        id: makeId("voice"),
+        timestamp: new Date().toISOString(),
+        prompt: rawText,
+        response: responseText,
+      };
+
+      onUpdateData((prev) => ({
+        ...prev,
+        voiceTurns: [turn, ...((prev as any).voiceTurns || [])],
+      }));
     }
   };
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 shadow-sm w-full max-w-sm">
+    <div className="rounded-2xl border border-border bg-card/80 backdrop-blur p-4 shadow-sm w-full max-w-sm transition-all">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div
             className={`h-2.5 w-2.5 rounded-full ${
-              isListening
-                ? "bg-red-500 animate-ping"
-                : isSpeaking
+              isSpeaking
                 ? "bg-emerald-500 animate-pulse"
-                : "bg-muted-foreground"
+                : isListening
+                ? "bg-blue-500 animate-pulse"
+                : "bg-amber-500"
             }`}
           />
-          <span className="font-bold text-xs uppercase tracking-wider">
-            Nati Assistant {shouldListenRef.current && "(Hands-Free Active)"}
+          <span className="font-bold text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-primary" /> Nutty Background Engine
           </span>
         </div>
         {isSpeaking && (
@@ -215,39 +226,21 @@ export function JarvisVoice({ data, onUpdateData }: JarvisVoiceProps) {
         )}
       </div>
 
-      <div className="min-h-[50px] rounded-lg bg-muted/40 p-2.5 mb-3 text-xs font-mono flex flex-col justify-center">
-        {transcript && <p className="text-foreground font-semibold mb-1">"{transcript}"</p>}
-        {lastReply ? (
-          <p className="text-muted-foreground">{lastReply}</p>
+      <div className="min-h-[54px] rounded-lg bg-muted/30 p-3 text-xs font-mono flex flex-col justify-center border border-border/50">
+        {transcript ? (
+          <p className="text-foreground font-semibold">"{transcript}"</p>
         ) : (
-          !transcript && (
-            <p className="text-muted-foreground italic">
-              {shouldListenRef.current
-                ? "Say 'Hey Nati' or ask a question..."
-                : "Click below to start hands-free conversation..."}
-            </p>
-          )
+          <p className="text-muted-foreground italic">{lastReply}</p>
         )}
       </div>
 
-      <button
-        onClick={toggleListening}
-        className={`w-full py-2.5 rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-all ${
-          shouldListenRef.current
-            ? "bg-red-600 hover:bg-red-700 text-white shadow-red-500/20 shadow-md"
-            : "bg-primary hover:opacity-90 text-primary-foreground shadow-md"
-        }`}
-      >
-        {shouldListenRef.current ? (
-          <>
-            <MicOff className="h-4 w-4" /> End Conversation
-          </>
-        ) : (
-          <>
-            <Sparkles className="h-4 w-4" /> Start Nati Voice Mode
-          </>
-        )}
-      </button>
+      <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground px-1">
+        <span className="flex items-center gap-1">
+          <Mic className={`h-3 w-3 ${isListening ? "text-blue-500" : "text-muted-foreground"}`} />
+          {isListening ? "Always-On Listening..." : "Click anywhere on screen to wake mic"}
+        </span>
+        <span className="font-semibold text-primary/80">"Hey Nutty"</span>
+      </div>
     </div>
   );
 }
