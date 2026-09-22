@@ -2,6 +2,14 @@ import { Router } from "express";
 
 const router = Router();
 
+// Fallback array in case Google API aliases differ
+const MODEL_CANDIDATES = [
+  "gemini-2.0-flash",
+  "gemini-1.5-flash-latest",
+  "gemini-1.5-flash-002",
+  "gemini-1.5-flash"
+];
+
 router.post("/chat", async (req, res) => {
   const { prompt, osContext, ambientTrigger } = req.body;
 
@@ -27,37 +35,48 @@ GUIDELINES:
     }
 
     const apiKey = rawApiKey.trim();
+    let replyText = "";
+    let lastError = "";
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: `${systemPrompt}\n\nUser Input: ${prompt || ambientTrigger || "Hello"}` }],
+    // Loop through candidate models until one succeeds
+    for (const model of MODEL_CANDIDATES) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": apiKey,
             },
-          ],
-        }),
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [{ text: `${systemPrompt}\n\nUser Input: ${prompt || ambientTrigger || "Hello"}` }],
+                },
+              ],
+            }),
+          }
+        );
+
+        const data: any = await response.json();
+
+        if (response.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+          replyText = data.candidates[0].content.parts[0].text;
+          break; // Stop loop on successful generation
+        } else {
+          lastError = data?.error?.message || `HTTP ${response.status}`;
+          console.warn(`[Gemini Model ${model} failed]:`, lastError);
+        }
+      } catch (err: any) {
+        lastError = err?.message || "Fetch network error";
       }
-    );
-
-    const data: any = await response.json();
-
-    if (!response.ok) {
-      console.error("[Gemini Rejection]:", JSON.stringify(data, null, 2));
-      const googleError = data?.error?.message || "Invalid API request";
-      return res.json({ text: `Neural network error: ${googleError}` });
     }
 
-    const replyText =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "I'm online and listening, sir.";
+    if (!replyText) {
+      return res.json({ text: `Neural network error: ${lastError}` });
+    }
 
     return res.json({ text: replyText });
   } catch (error: any) {
