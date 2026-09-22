@@ -9,41 +9,64 @@ const FALLBACK_MODELS = [
   "gemini-1.5-pro"
 ];
 
-// Helper to strip out internal AI thoughts, draft notes, and metadata
-function extractSpokenText(rawText: string): string {
+function extractSpokenText(rawText: string, userPrompt: string): string {
   if (!rawText) return "I'm online, sir.";
 
-  // 1. If Gemini placed the final answer inside double quotes, extract that last quote
-  const quoteMatches = Array.from(rawText.matchAll(/"([^"]{3,})"/g));
-  if (quoteMatches.length > 0) {
-    const lastQuote = quoteMatches[quoteMatches.length - 1][1].trim();
-    if (!lastQuote.includes("SpeakingIntent") && !lastQuote.includes("Constraint:")) {
-      return lastQuote;
+  const normalizedPrompt = (userPrompt || "").toLowerCase().trim();
+
+  // Split into lines and clean whitespace
+  const lines = rawText
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+
+  // Filter out thoughts, metadata, draft labels, and prompt echoes
+  const cleanLines = lines.filter((line) => {
+    const lowerLine = line.toLowerCase().replace(/^["']|["']$/g, "").trim();
+
+    // 1. Filter out exact or partial echoes of what the user said
+    if (normalizedPrompt && (lowerLine === normalizedPrompt || lowerLine.includes(normalizedPrompt))) {
+      return false;
     }
+
+    // 2. Filter out internal thinking headers and scratchpad metadata
+    if (
+      /^(speakingintent|intent|name|constraint|draft|note|reasoning|evaluation|context|user input|user said|thought):/i.test(line)
+    ) {
+      return false;
+    }
+
+    // 3. Filter out self-check questions like "No markdown? Yes."
+    if (/\?\s*(yes|no)\.?$/i.test(line)) {
+      return false;
+    }
+
+    return true;
+  });
+
+  if (cleanLines.length === 0) {
+    return "All quiet on your social feeds today, sir.";
   }
 
-  // 2. Remove internal scratchpad keywords and evaluation lines
-  let cleaned = rawText
-    .replace(/^(SpeakingIntent|Intent|Name|Constraint|Draft\s*\d*|Note|Reasoning|Evaluation|Check|Context):.*$/gmi, '')
-    .replace(/^.*\?\s*(Yes|No)\.?$/gmi, '')
-    .replace(/\*[\s\S]*?\*/g, '')
-    .replace(/^\s*[\*\-\•].*$/gm, '')
+  // Pick the last valid conversational sentence
+  let selected = cleanLines[cleanLines.length - 1];
+
+  // Strip Markdown asterisks and quotes
+  selected = selected
+    .replace(/\*[\s\S]*?\*/g, "")
+    .replace(/^["']|["']$/g, "")
     .trim();
 
-  // 3. Select the final clean line
-  const lines = cleaned.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-  if (lines.length > 0) {
-    cleaned = lines[lines.length - 1];
-  }
-
-  return cleaned.replace(/^["']|["']$/g, '').trim() || "All clear on my end, sir.";
+  return selected || "All quiet on your social feeds today, sir.";
 }
 
 router.post("/chat", async (req, res) => {
   const { prompt, osContext, ambientTrigger } = req.body;
+  const userMessage = prompt || ambientTrigger || "Hello";
 
   const systemInstructionText = `
-You are Nutty, an autonomous personal operating system assistant (like JARVIS). You speak naturally out loud.
+You are Nutty, an autonomous personal operating system assistant (like JARVIS).
+You respond directly to the user out loud.
 
 CURRENT OS CONTEXT:
 - Calendar: ${JSON.stringify(osContext?.calendar || [])}
@@ -51,8 +74,10 @@ CURRENT OS CONTEXT:
 - Tasks: ${JSON.stringify(osContext?.tasks || [])}
 - Socials: ${JSON.stringify(osContext?.socials || [])}
 
-INSTRUCTIONS:
-Speak directly to the user in 1-2 brief sentences. Do NOT output internal notes, planning steps, or drafts.
+RULES:
+1. Reply directly to the user's request in 1 to 2 brief sentences.
+2. NEVER echo or repeat the user's message.
+3. NEVER output thought processes, reasoning notes, or draft labels.
 `;
 
   try {
@@ -64,6 +89,7 @@ Speak directly to the user in 1-2 brief sentences. Do NOT output internal notes,
     const apiKey = rawApiKey.trim();
     let candidateModels: string[] = [];
 
+    // Dynamically query supported models
     try {
       const listRes = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
@@ -99,12 +125,12 @@ Speak directly to the user in 1-2 brief sentences. Do NOT output internal notes,
               contents: [
                 {
                   role: "user",
-                  parts: [{ text: prompt || ambientTrigger || "Hello" }]
+                  parts: [{ text: userMessage }]
                 }
               ],
               generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 100
+                temperature: 0.6,
+                maxOutputTokens: 120
               }
             }),
           }
@@ -114,7 +140,6 @@ Speak directly to the user in 1-2 brief sentences. Do NOT output internal notes,
 
         if (response.ok && data?.candidates?.[0]?.content?.parts) {
           const parts = data.candidates[0].content.parts;
-          // Filter out parts marked as thought blocks
           const nonThoughtParts = parts.filter((p: any) => !p.thought);
           
           rawReplyText = (nonThoughtParts.length > 0 ? nonThoughtParts : parts)
@@ -134,8 +159,8 @@ Speak directly to the user in 1-2 brief sentences. Do NOT output internal notes,
       return res.json({ text: `Neural network error: ${lastError}` });
     }
 
-    // Extract ONLY the clean spoken sentence
-    const cleanReply = extractSpokenText(rawReplyText);
+    // Filter out user echoes and extract only Nutty's real reply
+    const cleanReply = extractSpokenText(rawReplyText, userMessage);
 
     return res.json({ text: cleanReply });
   } catch (error: any) {
