@@ -16,39 +16,43 @@ CURRENT OS CONTEXT:
 - Social Updates: ${JSON.stringify(osContext?.socials || [])}
 
 GUIDELINES:
-1. Keep spoken responses brief, human, and direct (1-3 sentences max unless asked for details).
+1. Keep spoken responses brief, human, and direct (1-2 sentences max).
 2. Never sound robotic or output markdown code blocks.
-3. If an ambient event triggered this (e.g., user playing music, new email arrived), bring it up naturally as an interjection.
 `;
 
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return res.json({ text: "AI service key is missing. Please set GEMINI_API_KEY in Render." });
+    const rawApiKey = process.env.GEMINI_API_KEY;
+    if (!rawApiKey) {
+      return res.json({ text: "My GEMINI_API_KEY is missing in Render environment variables, sir." });
     }
+
+    const apiKey = rawApiKey.trim();
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey,
+        },
         body: JSON.stringify({
           contents: [
             {
               role: "user",
-              parts: [{ text: `${systemPrompt}\n\nUser Input: ${prompt || ambientTrigger}` }],
+              parts: [{ text: `${systemPrompt}\n\nUser Input: ${prompt || ambientTrigger || "Hello"}` }],
             },
           ],
         }),
       }
     );
 
-    // Cast response to any to fix TypeScript 'unknown' type error
     const data: any = await response.json();
 
     if (!response.ok) {
-      console.error("[Gemini API Error]:", data);
-      return res.json({ text: "I am having trouble connecting to my neural network right now, sir." });
+      console.error("[Gemini Rejection]:", JSON.stringify(data, null, 2));
+      const googleError = data?.error?.message || "Invalid API request";
+      return res.json({ text: `Neural network error: ${googleError}` });
     }
 
     const replyText =
@@ -56,9 +60,9 @@ GUIDELINES:
       "I'm online and listening, sir.";
 
     return res.json({ text: replyText });
-  } catch (error) {
-    console.error("AI Generation Error:", error);
-    return res.json({ text: "I encountered a minor processing delay, sir." });
+  } catch (error: any) {
+    console.error("[AI Catch Error]:", error);
+    return res.json({ text: `Processing delay: ${error?.message || "Unknown error"}` });
   }
 });
 
