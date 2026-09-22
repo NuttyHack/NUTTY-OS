@@ -5,7 +5,6 @@ const router = Router();
 router.post("/chat", async (req, res) => {
   const { prompt, osContext, ambientTrigger } = req.body;
 
-  // Construct system prompt with full live context
   const systemPrompt = `
 You are Nutty, an autonomous, highly intelligent personal operating system assistant (like JARVIS).
 You speak naturally, concisely, and conversationally out loud via text-to-speech.
@@ -23,10 +22,9 @@ GUIDELINES:
 `;
 
   try {
-    // Call Gemini API / OpenRouter / AI Provider
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return res.json({ text: "AI service key is missing. Please set GEMINI_API_KEY." });
+      return res.json({ text: "AI service key is missing. Please set GEMINI_API_KEY in Render." });
     }
 
     const response = await fetch(
@@ -45,15 +43,22 @@ GUIDELINES:
       }
     );
 
-    const data = await response.json();
+    // Cast response to any to fix TypeScript 'unknown' type error
+    const data: any = await response.json();
+
+    if (!response.ok) {
+      console.error("[Gemini API Error]:", data);
+      return res.json({ text: "I am having trouble connecting to my neural network right now, sir." });
+    }
+
     const replyText =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "I'm here, sir. How can I assist you?";
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "I'm online and listening, sir.";
 
     return res.json({ text: replyText });
   } catch (error) {
     console.error("AI Generation Error:", error);
-    return res.json({ text: "I encountered a minor processing delay, sir. What was that again?" });
+    return res.json({ text: "I encountered a minor processing delay, sir." });
   }
 });
 
