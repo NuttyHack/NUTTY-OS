@@ -2,12 +2,11 @@ import { Router } from "express";
 
 const router = Router();
 
-// List of standard active models to try sequentially
-const MODEL_CANDIDATES = [
+// Fallback list if dynamic ListModels endpoint is unreachable
+const FALLBACK_MODELS = [
   "gemini-2.0-flash",
   "gemini-1.5-flash",
-  "gemini-1.5-flash-latest",
-  "gemini-2.0-flash-lite",
+  "gemini-1.5-flash-002",
   "gemini-1.5-pro"
 ];
 
@@ -36,11 +35,38 @@ GUIDELINES:
     }
 
     const apiKey = rawApiKey.trim();
+    let candidateModels: string[] = [];
+
+    // 1. Ask Google directly which models this API key supports right now
+    try {
+      const listRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
+      );
+      if (listRes.ok) {
+        const listData: any = await listRes.json();
+        const available = (listData?.models || [])
+          .filter((m: any) => m.supportedGenerationMethods?.includes("generateContent"))
+          .map((m: any) => m.name.replace("models/", ""));
+
+        if (available.length > 0) {
+          candidateModels = available;
+          console.log("[Gemini ListModels] Dynamically discovered supported models:", candidateModels);
+        }
+      }
+    } catch (e) {
+      console.warn("[Gemini ListModels] Failed to fetch dynamic model list, using defaults:", e);
+    }
+
+    // Use fallback models if dynamic discovery returned nothing
+    if (candidateModels.length === 0) {
+      candidateModels = FALLBACK_MODELS;
+    }
+
     let replyText = "";
     let lastError = "";
 
-    // Try each model until one succeeds with a 200 OK response
-    for (const model of MODEL_CANDIDATES) {
+    // 2. Try candidate models until one succeeds
+    for (const model of candidateModels) {
       try {
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
@@ -48,7 +74,6 @@ GUIDELINES:
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "x-goog-api-key": apiKey,
             },
             body: JSON.stringify({
               contents: [
@@ -65,11 +90,11 @@ GUIDELINES:
 
         if (response.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
           replyText = data.candidates[0].content.parts[0].text;
-          console.log(`[Gemini AI Success] Used model: ${model}`);
-          break; // Stop execution on first success
+          console.log(`[Gemini AI Success] Successfully connected using model: ${model}`);
+          break; // Stop loop on first successful generation
         } else {
           lastError = data?.error?.message || `HTTP ${response.status}`;
-          console.warn(`[Gemini AI] Model ${model} skipped:`, lastError);
+          console.warn(`[Gemini AI Model ${model} skipped]:`, lastError);
         }
       } catch (err: any) {
         lastError = err?.message || "Network request failed";
